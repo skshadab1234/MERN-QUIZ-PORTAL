@@ -63,7 +63,7 @@ const Questions = ({ token }) => {
     if(flag == false){
       answerData.push({questionId,answer})
       setTimeout(async () => {
-        const res = await fetch("https://ciiyc-2022.herokuapp.com/uploadTest", {
+        const res = await fetch("/uploadTest", {
           method: "POST",
           headers: {
               "Content-Type" : "application/json"

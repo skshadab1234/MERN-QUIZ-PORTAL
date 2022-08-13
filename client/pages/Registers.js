@@ -23,7 +23,7 @@ const Registers = ({ token }) => {
 
     const callRegistersPage = async () => {
         try {
-            const response = await fetch("https://ciiyc-2022.herokuapp.com/profile", {
+            const response = await fetch("/profile", {
                 method: "GET",
                 headers: {
                     Accept: "appllication/json",
@@ -74,7 +74,7 @@ const Registers = ({ token }) => {
         if(email == "" || password == "" || candidate_name == "" || YearofStudy == "" || Semester == ""){
             alert("Fields are empty")
         }else{
-            const res = await fetch("https://ciiyc-2022.herokuapp.com/register", {
+            const res = await fetch("/register", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json"

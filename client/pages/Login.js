@@ -64,7 +64,7 @@ const Login = ({token}) => {
     
   const CallUserData = async () => {
     try {
-      const response = await fetch("https://ciiyc-2022.herokuapp.com/getdata", {
+      const response = await fetch("/getdata", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"

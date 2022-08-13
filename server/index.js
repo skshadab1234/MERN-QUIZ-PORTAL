@@ -8,6 +8,7 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(require('./router/auth'))
 app.use(cors())
+
 dotenv.config({path: "./config.env"}) 
 
  

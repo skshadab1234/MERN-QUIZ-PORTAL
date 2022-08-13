@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 const Logout = () => {
     const router = useRouter();
     useEffect(() => {
-        fetch("https://ciiyc-2022.herokuapp.com/logout", {
+        fetch("/logout", {
             method: "GET",
             headers: {
               Accept: "appllication/json",
