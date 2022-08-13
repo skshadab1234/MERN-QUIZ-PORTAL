@@ -39,7 +39,7 @@ const Login = ({token}) => {
         if(inputsvalues.email == "" || inputsvalues.password == ""){
             alert("Fields are empty")
         }else{
-            const res = await fetch("https://ciiyc-2022.herokuapp.com/login", {
+            const res = await fetch("/login", {
                 method: "POST",
                 headers: {
                     "Content-Type" : "application/json"
