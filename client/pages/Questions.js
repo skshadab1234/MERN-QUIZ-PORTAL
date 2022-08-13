@@ -6,8 +6,10 @@ import callUserData from '../data/callUserData'
 const Questions = ({ token }) => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [userdata, setuserdata] = useState([]);
 
     callUserData().then(res => {
+      setuserdata(res)
       if(res.testOn == "false") {  
         router.push("/")
       }

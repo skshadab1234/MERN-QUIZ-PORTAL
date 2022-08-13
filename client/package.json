@@ -1,6 +1,8 @@
 {
   "name": "crack-if-you-can",
   "version": "0.1.0",
+  "private": true,
+  "proxy": "https://ciiyc-2022.herokuapp.com/",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
