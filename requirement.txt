@@ -1,1 +1,5 @@
 we need 2 logo 1 for small device and another for larger devices
+
+
+// Error Faced
+1. On Server Side, i added the environment variable key value as DB and on my system it is DATABASE. so it is not finding the database and i got stuck into it.

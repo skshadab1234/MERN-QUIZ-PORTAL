@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-
 const Homepage = () => {
   const [timecuntdoum, settimer] = useState({
     days: 0,
@@ -87,7 +86,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-
+     
       {/* Button Proceed to Rules  */}
       <div className=" mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
         <div className="rounded-md shadow">
