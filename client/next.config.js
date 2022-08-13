@@ -40,27 +40,27 @@ module.exports = () => {
     return [
       {
         source: "/login",
-        destination: "https://ciiyc-cesa.herokuapp.com/login",
+        destination: "https://ciiyc-2022.herokuapp.com/login",
       },
       {
         source: "/profile",
-        destination: "https://ciiyc-cesa.herokuapp.com/profile",
+        destination: "https://ciiyc-2022.herokuapp.com/profile",
       },
       {
         source: "/getdata",
-        destination: "https://ciiyc-cesa.herokuapp.com/getdata",
+        destination: "https://ciiyc-2022.herokuapp.com/getdata",
       },
       {
         source: "/logout",
-        destination: "https://ciiyc-cesa.herokuapp.com/logout",
+        destination: "https://ciiyc-2022.herokuapp.com/logout",
       },
       {
         source: "/register",
-        destination: "https://ciiyc-cesa.herokuapp.com/register",
+        destination: "https://ciiyc-2022.herokuapp.com/register",
       },
       {
         source: "/uploadTest",
-        destination: "https://ciiyc-cesa.herokuapp.com/uploadTest",
+        destination: "https://ciiyc-2022.herokuapp.com/uploadTest",
       },
       
     ];
