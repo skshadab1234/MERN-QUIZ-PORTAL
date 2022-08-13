@@ -42,7 +42,7 @@ const Questions = ({ token }) => {
         flag = true
         answerData[i].answer = answer
         setTimeout(async () => {
-          const res = await fetch("/uploadTest", {
+          const res = await fetch("https://ciiyc-2022.herokuapp.com/uploadTest", {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
@@ -63,7 +63,7 @@ const Questions = ({ token }) => {
     if(flag == false){
       answerData.push({questionId,answer})
       setTimeout(async () => {
-        const res = await fetch("/uploadTest", {
+        const res = await fetch("https://ciiyc-2022.herokuapp.com/uploadTest", {
           method: "POST",
           headers: {
               "Content-Type" : "application/json"

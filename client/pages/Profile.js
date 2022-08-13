@@ -22,7 +22,7 @@ const Profile = ({token}) => {
 
   const callProfilePage = async () => {
     try {
-      const response = await fetch("/profile", {
+      const response = await fetch("https://ciiyc-2022.herokuapp.com/profile", {
         method: "GET",
         headers: {
           Accept: "appllication/json",
