@@ -1,19 +1,8 @@
 import { Fragment, useContext, useState, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
-import Image from 'next/image'
-import settings from '../../../data/settings'
 
 export default function Header({token}){
-  const settingsData =  settings()
-  const [setting, setSetting] = useState([])
-  useEffect(()=> {
-    settingsData.then(res => {
-      setSetting(res)
-    }).catch(err => console.log(err))
-  }), []
-
-  console.log(setting);
   
   
   function classNames(...classes) {

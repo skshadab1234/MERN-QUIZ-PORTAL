@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-
+import settings from '../data/settings'
 const Homepage = () => {
 
   const [timecuntdoum, settimer] = useState({
@@ -11,6 +11,14 @@ const Homepage = () => {
   })
   const [addLoding, setLoading] = useState(false)
   const router = useRouter();
+const [Settings, setSetting] = useState([])
+  useEffect(() => {
+    settings().then(res => {
+      setSetting(res)
+    }).catch(err => console.log(err))
+  }, [])
+  
+
   const styles =
   {
     heading: "font-bold md:text-[64px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
@@ -67,7 +75,7 @@ const Homepage = () => {
           <h1 className={styles.heading + " text-white"}>CESA</h1>
           <p className={styles.subHead}>PRESENTS</p>
           <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>CRACK IT IF YOU CAN</h1>
-          <p className={styles.subHead}>ON 3<sup>rd</sup> SEPTEMBER, 2022</p>
+          <p className={styles.subHead}>ON {Settings.testDate}</p>
         </div>
       </div>
 

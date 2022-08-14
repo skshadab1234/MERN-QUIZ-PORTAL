@@ -1,9 +1,14 @@
 import React from 'react'
-
-const Results = () => {
+import Header from './components/Header/Header'
+const Results = ( {token }) => {
   return (
-    <div>Results</div>
+    <Header  token={token}/>
   )
 }
 
 export default Results
+
+
+export function getServerSideProps({ req, res }) {
+  return { props: { token: req.cookies.jwtoken || '' } }
+}
