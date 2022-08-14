@@ -116,7 +116,7 @@ const Questions = ({ token }) => {
           return <>
             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
               <h1 className='text-xl md:text-2xl'>Q{index + 1 + ') ' + question.question_name}</h1>
-              <img src={question.questionImage} className="w-full mt-6" />
+              <img src={question.questionImage} className="w-full mt-6 object-contain" />
               <h1 className='text-xl md:text-2xl mt-5'>Answer:</h1>
 
               <div className='flex justify-center'>
@@ -125,7 +125,7 @@ const Questions = ({ token }) => {
                     (question.answers).map((answers, index_ans) => {
                       return <>
                         <div className={styles.Options} onClick={() => getAnswerChoose(index_ans, question.answers.length, question.questionId)}>
-                          <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected mt-6 w-full h-full border-2" />
+                          <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected mt-6 w-full h-full border-2 object-contain" />
                         </div>
                       </>
                     })

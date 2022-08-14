@@ -77,7 +77,7 @@ const Profile = ({ token }) => {
               <div className="w-full md:w-3/12 md:mx-2">
                 <div className="my-4">
                   <div className="image overflow-hidden flex justify-center">
-                    <h1 className='text-white bg-gradient-to-r from-[#0099CC] to-[#9933FF] flex justify-center text-8xl font-bold p-6 rounded-full w-52 place-items-center h-48'>{getFirstString(userdata.candidate_name)}</h1>
+                    <h1 className='text-white cursor-default select-none hover:bg-gradient-to-l bg-gradient-to-r from-[#0099CC] to-[#9933FF] flex justify-center text-8xl font-bold p-6 rounded-full w-52 place-items-center h-48'>{getFirstString(userdata.candidate_name)}</h1>
                   </div>
                   {/* <h1 className="text-white text-center font-bold text-xl leading-8 my-4">{userdata.candidate_name}</h1> */}
                 </div>

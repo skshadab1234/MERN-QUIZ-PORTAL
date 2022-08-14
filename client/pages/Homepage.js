@@ -20,7 +20,7 @@ const Homepage = () => {
   }
 
   // Set the date we're counting down to
-  var countDownDate = new Date("AUG 14, 2022 10:36:00 am").getTime();
+  var countDownDate = new Date("AUG 14, 2022 1:15:00 pm").getTime();
 
   // Update the count down every 1 second
   var timer = setInterval(function () {
@@ -42,8 +42,8 @@ const Homepage = () => {
   if (days < 0 && hours < 0 && minutes < 0 && seconds < 0) {
     clearInterval(timer);
     if (typeof window !== "undefined") {
-      document.getElementById("timer__section").classList.add('hidden')
       document.getElementById("button_proceed").classList.remove("hidden")
+      document.getElementById("timer__section").classList.add('hidden')
     }
   }
 
@@ -90,8 +90,8 @@ const Homepage = () => {
       </div>
 
       {/* Button Proceed to Rules  */}
-      <div className="hidden mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
-        <div className="rounded-md shadow">
+      <div className=" mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-center">
+        <div className="rounded-md shadow flex justify-center ">
           <a id="button_proceed"
             onClick={() => {
               setLoading(true)
@@ -99,7 +99,7 @@ const Homepage = () => {
                 router.push("/Rules")
               }, 1000);
             }}
-            className="hidden cursor-pointer w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+            className="hidden cursor-pointer w-40 md:w-60 flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
             {addLoding ? <><div role="status">
               <svg class="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
