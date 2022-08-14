@@ -9,7 +9,6 @@ const Homepage = () => {
     minutes: 0,
     seconds: 0
   })
-
   const [addLoding, setLoading] = useState(false)
   const router = useRouter();
   const styles =
@@ -20,7 +19,7 @@ const Homepage = () => {
   }
 
   // Set the date we're counting down to
-  var countDownDate = new Date("AUG 14, 2022 1:15:00 pm").getTime();
+  var countDownDate = new Date("AUG 14, 2022 3:58:00 pm").getTime();
 
   // Update the count down every 1 second
   var timer = setInterval(function () {
@@ -60,10 +59,11 @@ const Homepage = () => {
     seconds = "0" + seconds
   }
   return (
-    <>
+    <div className='h-full'>
       <div className='flex justify-center mt-8'>
         {/* Hero Section  */}
         <div>
+          {/* <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Welcome, Khan Shadab Alam</h1> */}
           <h1 className={styles.heading + " text-white"}>CESA</h1>
           <p className={styles.subHead}>PRESENTS</p>
           <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>CRACK IT IF YOU CAN</h1>
@@ -111,7 +111,7 @@ const Homepage = () => {
 
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

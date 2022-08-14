@@ -24,12 +24,13 @@ const Questions = ({ token }) => {
       )
 
       const data = await response.json();
+      if(userdata.testOn == 'false') {  
+        router.push("/")
+      }
       setuserdata(data);
       setLoading(false)
       
-      if(!userdata.testOn) {  
-        // router.push("/")
-      }
+     
       if (!response.status === 200) {
         throw new Error(response.error);
         router.push("/Login")
@@ -43,7 +44,7 @@ const Questions = ({ token }) => {
 
   useEffect(() => {
     callQuestionPage()
-  }, [])
+  }, [userdata])
 
   
   var answerData = []
@@ -99,6 +100,29 @@ const Questions = ({ token }) => {
    
   }
 
+  const SubmitAnswertoDb = async () => {
+    try {
+      const response = await fetch("/EndTest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          "_id":userdata._id,
+        })
+      }
+      )
+
+      router.push("/Results")
+      if(data.status != 200 && !data) {
+        throw new Error("Something went Wrong!!")
+      }
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Header token={token} />
@@ -187,9 +211,9 @@ const Questions = ({ token }) => {
             <button
               className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={() => SubmitAnswertoDb()}
+              onClick={SubmitAnswertoDb}
             >
-              Save Changes
+              End Test
             </button>
           </div>
         </div>

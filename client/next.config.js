@@ -2,6 +2,10 @@
 //   const rewrites = () => {
 //     return [
 //       {
+//         source: "/settings",
+//         destination: "http://localhost:3001/settings",
+//       },
+//       {
 //         source: "/login",
 //         destination: "http://localhost:3001/login",
 //       },
@@ -24,6 +28,10 @@
 //       {
 //         source: "/uploadTest",
 //         destination: "http://localhost:3001/uploadTest",
+//       },
+//       {
+//         source: "/EndTest",
+//         destination: "http://localhost:3001/EndTest",
 //       },
 //     ];
 //   };
@@ -62,6 +70,14 @@ module.exports = () => {
         source: "/uploadTest",
         destination: "https://ciiyc-2022.herokuapp.com/uploadTest",
       },
+      {
+        source: "/EndTest",
+        destination: "https://ciiyc-2022.herokuapp.com/EndTest",
+      },
+          {
+            source: "/settings",
+            destination: "https://ciiyc-2022.herokuapp.com/settings",
+          },
       
     ];
   };

@@ -18,7 +18,7 @@ const Registers = ({ token }) => {
         subHead: "text-center mt-3 text-xl text-white md:text-[24px] text-[18px] ",
         timerDiv: "bg-[#161B22] flex justify-center h-40 place-items-center md:text-[6xl] text-7xl font-bold text-white rounded-lg w-40 md:w-60 ml-0 md:ml-6 mt-10",
         label: "block text-gray-700 text-sm font-bold mb-2",
-        input: "w-full shadow h-12  appearance-none rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline bg-[#161B22] border-2 border-[#b673f8]"
+        input: "w-full shadow h-12  appearance-none rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline dark_bg border-2 border-[#b673f8]"
     }
 
     const callRegistersPage = async () => {
@@ -105,7 +105,7 @@ const Registers = ({ token }) => {
                 <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Register</h1>
             </div>
             {/* Login Form DISPLAY  */}
-            <div className='m-auto w-4/5 md:w-2/5 bg-[#161B22] h-3/5 p-10  mt-5 rounded-lg text-white'>
+            <div className='m-auto w-4/5 md:w-2/5 dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
                 {/* Login Input Fields */}
                 <form method='post' onSubmit={RegisterUser}>
                     {

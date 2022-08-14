@@ -7,8 +7,15 @@ body {
     background-color: #0d0620;
 }
 
+.dark_bg{
+    background-color: #0d0620;
+}
 .dark_theme{
     background-color: #2A2440;
+}
+
+.swal2-popup{
+    background-color: #2A2440!important;
 }
 .title{
     font-size: 24px;

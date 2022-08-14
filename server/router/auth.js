@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const User = require("../models/userSchema")
+const Settings = require("../models/settings")
 const bcrypt = require("bcryptjs")
 const pageAuth = require("../middleware/pageAuth")
 
@@ -84,10 +85,25 @@ router.get("/logout", (req,res) => {
     res.status(200).send("Logout Successfully")
 })
 
+// End Test Router 
+router.post("/EndTest", async (req,res) => {
+    try {
+        const {_id, answerData} = req.body
+        const updateData = await User.updateOne({_id}, {$set: { testOn : "false"}})
+        res.status(200).send("Updated Result")
+    } catch (error) {
+        res.status(400).send("Something went Wrong");
+    }
+})
 
-
-router.get("/", (req,res) => {
-    res.status(200).send("Shadab is here!!")
+router.post("/settings", async (req,res) => {
+    try {
+        const rootSettings = await Settings.findOne()
+        res.send(rootSettings)
+    } catch (error) {
+        res.status(400).send("Something went Wrong!!")
+    }
+    
 })
 
 
