@@ -114,7 +114,7 @@ const Questions = ({ token }) => {
        <>
          {QuestionsData.map((question, index) => {
           return <>
-            <div key={index} className='bg-[#161B22] h-3/5 p-10  mt-5 rounded-lg text-white'>
+            <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
               <h1 className='text-xl md:text-2xl'>Q{index + 1 + ') ' + question.question_name}</h1>
               <img src={question.questionImage} className="w-full mt-6" />
               <h1 className='text-xl md:text-2xl mt-5'>Answer:</h1>

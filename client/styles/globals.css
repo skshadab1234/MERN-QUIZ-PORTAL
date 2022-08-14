@@ -4,9 +4,12 @@
     font-family: 'Poppins', sans-serif;
 }
 body {
-    background-color: #1a202c;
+    background-color: #0d0620;
 }
 
+.dark_theme{
+    background-color: #2A2440;
+}
 .title{
     font-size: 24px;
     color: #A3B397;
