@@ -13,7 +13,6 @@ const Questions = ({ token }) => {
   const settingsData = settings()
   useEffect(() => {
     settingsData.then(res => {
-
       if (res.testGoing == false) {
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         var datenow = new Date()
@@ -28,9 +27,7 @@ const Questions = ({ token }) => {
         }
         settestRejection(`${DateDisplay}`)
         setLoading(false)
-      } else {
-        callQuestionPage()
-      }
+      } 
     }).catch(err => console.log(err))
   }, [userdata])
 
@@ -72,7 +69,10 @@ const Questions = ({ token }) => {
     }
   }
 
-
+  useEffect(() => {
+    callQuestionPage()
+  }, [])
+  
   var answerData = []
   var flag = false
   const getAnswerChoose = async (answer, totalOpt, questionId) => {
