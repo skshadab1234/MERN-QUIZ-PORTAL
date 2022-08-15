@@ -36,7 +36,15 @@ const Questions = ({ token }) => {
         }else{
           // agar time bada hai test end time ke tho test start krna hai
           if(currTime > Date.parse(currDate + " " + res.testTime.substring(0, res.testTime.length - 3))) {
-            settestRejection('start')
+            console.log();
+            if (Object.keys(userdata).length > 0) {
+              if(userdata.testOn == 'false') {
+                settestRejection('taken')
+              }else{
+                settestRejection('start')
+              }
+            }
+            
           }else{
             settestRejection("todayStart")
           }
@@ -119,7 +127,7 @@ const Questions = ({ token }) => {
         flag = false
       }
     })
-    var completeTime = currDate + " " + datenow.getHours() + ":" + datenow.getMinutes()
+    var completeTime = Moment().format( "LLL" )
     if (flag == false) {
       answerData.push({ questionId, answer, completeTime })
       setTimeout(async () => {
@@ -185,9 +193,25 @@ const Questions = ({ token }) => {
         <>
           {
              testRejection == 'taken' ? <>
-                <div className='text-white'>
-                  You have already submitted the test
-                </div>
+                <div className="dark_theme relative top-[200px]">
+                      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+                        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
+                          <span className="block text-gray-500 flex">You have already submitted the test </span>
+                          <span className="block text-indigo-600">Get to know the winners list.</span>
+                        </h2>
+                        <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
+                          <div className="inline-flex rounded-md shadow">
+                            <Link  href="/Results">
+                              <a
+                                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                              >
+                                View Winners
+                              </a>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
               </> :
                 // testRejection == 'start' ? 'Start' :
                   testRejection == 'endedTimeUp' ?
