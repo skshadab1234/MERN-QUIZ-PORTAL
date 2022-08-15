@@ -11,12 +11,12 @@ const Homepage = () => {
   })
   const [addLoding, setLoading] = useState(false)
   const router = useRouter();
-const [Settings, setSetting] = useState([])
-  useEffect(() => {
-    settings().then(res => {
-      setSetting(res)
-    }).catch(err => console.log(err))
-  }, [])
+  const [Settings, setSetting] = useState([])
+    useEffect(() => {
+      settings().then(res => {
+        setSetting(res)
+      }).catch(err => console.log(err))
+    }, [])
   
 
   const styles =
@@ -27,7 +27,8 @@ const [Settings, setSetting] = useState([])
   }
 
   // Set the date we're counting down to
-  var countDownDate = new Date("AUG 14, 2022 3:58:00 pm").getTime();
+  var dateTime = Settings.testDate+" "+Settings.testTime
+  var countDownDate = new Date(dateTime).getTime();
 
   // Update the count down every 1 second
   var timer = setInterval(function () {
