@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import { useRouter } from 'next/router'
 import Swal from 'sweetalert2'
+import Head from 'next/head'
 
 const Login = ({token}) => {
     const router = useRouter();
@@ -121,6 +122,10 @@ const Login = ({token}) => {
 
     return (
         <div className='md:container md:mx-auto'>
+             <Head>
+                <title>Login - CESA -CSMIT</title>
+                <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+            </Head>
             <Header token={token}/>
             <div className='flex justify-center mt-8'>
                 {/* Login Section  */}

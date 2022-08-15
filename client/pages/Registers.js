@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import Header from './components/Header/Header'
+import Head from 'next/head'
 
 const Registers = ({ token }) => {
     const router = useRouter();
@@ -99,6 +100,10 @@ const Registers = ({ token }) => {
     }
     return (
         <div className='md:container md:mx-auto'>
+            <Head>
+                <title>Register - CESA -CSMIT</title>
+                <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+            </Head>
             <Header token={token} />
             <div className='flex justify-center mt-8'>
                 {/* Login Section  */}

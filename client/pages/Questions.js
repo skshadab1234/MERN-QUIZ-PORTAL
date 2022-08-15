@@ -3,6 +3,7 @@ import Header from './components/Header/Header'
 import { useRouter } from 'next/router'
 import QuestionsData from '../data/api_questions'
 import settings from '../data/settings'
+import Head from 'next/head'
 const Questions = ({ token }) => {
   const [testRejection, settestRejection] = useState('')
   const [isLoading, setLoading] = useState(true)
@@ -152,6 +153,10 @@ const Questions = ({ token }) => {
   // console.log(isLoading);
   return (
     <div className='md:container md:mx-auto mb-10'>
+       <Head>
+          <title>Test Screen - CESA -CSMIT</title>
+          <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+      </Head>
       <Header token={token} />
       {isLoading ?
         <div className='flex justify-center h-80 place-items-center'>

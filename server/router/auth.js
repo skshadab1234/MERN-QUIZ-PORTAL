@@ -7,7 +7,7 @@ const pageAuth = require("../middleware/pageAuth")
 
 router.post('/register', async (req,res) => {
     const { email, candidate_name, password, Semester, YearofStudy } = req.body
-    const testOn = false 
+    const testOn = true 
     try {
         const UserExists = await User.findOne({email:email});
 

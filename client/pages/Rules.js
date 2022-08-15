@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 const Rules = ({ token }) => {
     const [addLoding, setLoading] = useState(false)
@@ -29,6 +30,10 @@ const Rules = ({ token }) => {
 
     return (
         <div className='md:container md:mx-auto'>
+             <Head>
+                <title>Rules - CESA -CSMIT</title>
+                <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+            </Head>
             <Header token={token} />
             <div className='flex justify-center mt-8'>
                 {/* Rules Section  */}

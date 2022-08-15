@@ -1,5 +1,6 @@
 import React from 'react'
 import Header from './components/Header/Header'
+import Head from 'next/head'
 const Results = ({ token }) => {
 
   const styles =
@@ -10,6 +11,10 @@ const Results = ({ token }) => {
 
   return (
     <>
+    <Head>
+        <title>Results - CESA -CSMIT</title>
+        <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+    </Head>
       <div className='md:container md:mx-auto mb-10'>
         <Header token={token} />
         <div className='flex justify-center mt-8'>
