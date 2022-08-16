@@ -2,6 +2,7 @@ const express = require("express")
 const router = express.Router()
 const User = require("../models/userSchema")
 const Settings = require("../models/settings")
+const QuestionDb = require("../models/Questions")
 const bcrypt = require("bcryptjs")
 const pageAuth = require("../middleware/pageAuth")
 
@@ -88,8 +89,8 @@ router.get("/logout", (req,res) => {
 // End Test Router 
 router.post("/EndTest", async (req,res) => {
     try {
-        const {_id, answerData} = req.body
-        const updateData = await User.updateOne({_id}, {$set: { testOn : "false"}})
+        const {_id, SubmittedTime} = req.body
+        const updateData = await User.updateOne({_id}, {$set: { testOn : "false", SubmittedTime }})
         res.status(200).send("Updated Result")
     } catch (error) {
         res.status(400).send("Something went Wrong");
@@ -105,6 +106,41 @@ router.post("/settings", async (req,res) => {
     }
     
 })
+
+router.post("/getWinnersList", async (req,res) => {
+    try {
+        const UserQuestionAnswerList = []
+        const QuestionsFromClient = req.body
+        const Results = await User.find()
+        Results.map((win_res, i) => {
+            const { candidate_name, email, SubmittedTime } = win_res
+            win_res.UserTestResponse.map((question,index) => {
+                const {questionId,answer} = question
+                UserQuestionAnswerList.push({questionId, answer, candidate_name, email, SubmittedTime})
+            })
+            // List.push(win_res.UserTestResponse, win_res.candidate_name, win_res.email)
+        })
+        
+
+        // Yaha pe aab user ke answer aur databse ke question ko match krke answer choose krna hai 
+        const allquestion = QuestionsFromClient.QuestionsData
+        UserQuestionAnswerList.map((check_ans, i) => {
+            conosole.log(check_ans)
+            // const ClientQuestionNo = allquestion[i].questionId // Compare karne ke liye
+            // const correctOutput = allquestion[i].correctOutput
+            
+            // console.log(check_ans.answer, correctOutput)
+            // if(check_ans.answer == correctOutput) {
+            // }
+        })
+        
+    } catch (error) {
+        res.status(400).send("Something went Wrong!!")
+    }
+    
+})
+
+
 
 
 

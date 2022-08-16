@@ -69,6 +69,7 @@ const Questions = ({ token }) => {
   {
     Options: "cursor-pointer flex justify-center h-40 place-items-center md:text-[6xl] text-7xl font-bold text-white rounded-lg  ml-0 md:ml-6 mt-10"
   }
+  
   const callQuestionPage = async () => {
     try {
       const response = await fetch("/profile", {
@@ -80,10 +81,7 @@ const Questions = ({ token }) => {
         credentials: "include"
       }
       )
-
       const data = await response.json();
-
-
       if (!data.status === 200) {
         throw new Error(data.error);
         router.push("/Login")
@@ -94,10 +92,10 @@ const Questions = ({ token }) => {
           settestRejection("taken")
         }
       }
+
     } catch (error) {
       console.log(error);
       router.push("/Login")
-
     }
   }
 
@@ -108,6 +106,8 @@ const Questions = ({ token }) => {
   
   
   var flag = false
+  var completeTime = Moment().format("LL")+" "+Moment().format('LTS');
+
   const getAnswerChoose = async (answer, totalOpt, questionId) => {
     for (let index = 0; index < totalOpt; index++) {
       document.getElementById("optionselect" + questionId + index).classList.remove("border-indigo-500", "mix-blend-screen")
@@ -115,7 +115,6 @@ const Questions = ({ token }) => {
 
     document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen")
     
-    var completeTime = Moment().format("LLL")
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
         flag = true
@@ -168,14 +167,12 @@ const Questions = ({ token }) => {
         },
         body: JSON.stringify({
           "_id": userdata._id,
+          "SubmittedTime":completeTime
         })
       }
       )
 
       router.push("/Results")
-      if (data.status != 200 && !data) {
-        throw new Error("Something went Wrong!!")
-      }
 
     } catch (error) {
       console.log(error);

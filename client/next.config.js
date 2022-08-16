@@ -33,6 +33,11 @@
 //         source: "/EndTest",
 //         destination: "http://localhost:3001/EndTest",
 //       },
+//       {
+//         source: "/getWinnersList",
+//         destination: "http://localhost:3001/getWinnersList",
+//       },
+      
 //     ];
 //   };
 //   return {
@@ -74,10 +79,14 @@ module.exports = () => {
         source: "/EndTest",
         destination: "https://ciiyc-2022.herokuapp.com/EndTest",
       },
-          {
-            source: "/settings",
-            destination: "https://ciiyc-2022.herokuapp.com/settings",
-          },
+      {
+        source: "/settings",
+        destination: "https://ciiyc-2022.herokuapp.com/settings",
+      },
+      {
+        source: "/getWinnersList",
+        destination: "https://ciiyc-2022.herokuapp.com/getWinnersList",
+      },
       
     ];
   };

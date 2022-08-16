@@ -1,18 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import Head from 'next/head'
+import QuestionsData from "../data/api_questions"
+
 const Results = ({ token }) => {
+  const [ResultData, setResultData] = useState([])
   var array = [
     {
       ranked: 4,
-      name:"Khan Shadab Alam",
+      name: "Khan Shadab Alam",
       Scored: "4/5",
       completeTime: "33 Minutes",
       performance: 'Good'
     },
     {
       ranked: 5,
-      name:"Khan Mehtab",
+      name: "Khan Mehtab",
       Scored: "4/5",
       completeTime: "33 Minutes",
       performance: 'Good'
@@ -23,6 +26,32 @@ const Results = ({ token }) => {
     heading: "font-bold md:text-[64px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
   }
 
+  const callResultData = async () => {
+    try {
+      const res = await fetch("/getWinnersList", {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          QuestionsData
+        })
+    })
+      const data = await res.json();
+      if (!data.status === 200) {
+        throw new Error(data.error);
+      } else {
+        // setResultData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(ResultData)
+
+  useEffect(() => {
+    callResultData()
+  }, [])
 
   return (
     <>
@@ -34,7 +63,7 @@ const Results = ({ token }) => {
         <Header token={token} />
         <div className='flex justify-center mt-8 '>
           {/* Rules Section  */}
-          <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Results</h1>
+          <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Congratulations!!</h1>
         </div>
 
         <div className='grid grid-cols-1 gap-12 md:grid-cols-3 sm:grid-cols-1  p-4 mt-10 '>
@@ -114,36 +143,36 @@ const Results = ({ token }) => {
                     </thead>
                     <tbody className='text-center'>
                       {
-                        
-                      array.map((element,i) => {
-                        return <>
-                          <tr>
-                            <td className="px-6 py-4 whitespace-nowrap text-6xl text-yellow-400 font-medium ">
-                              {element.ranked}
-                            </td>
-                            <td className="text-sm font-light px-6 py-4 whitespace-nowrap flex md:justify-center">
-                              <div className='w-3/5   flex flex-col md:flex-row justify-left'>
-                                <img className=" w-16 rounded-full" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt=""  />
-                                <div className='md:ml-6 mt-2 font-bold tracking-wide'>
-                                  <h3 >{element.name}</h3>
-                                  <h3 className='font-light mt-1 text-left'>7<sup>th</sup>Sem/B.E</h3>
-                                </div>
-                              </div>
-                            </td>
-                            <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                              4 / 5
-                            </td>
-                            <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                              23 Minutes
-                            </td>
 
-                            <td className="text-sm text-green-200 font-light px-6 py-4 whitespace-nowrap">
-                              Good
-                            </td>
-                          </tr>
-                        </>
-                      })}
-                      
+                        array.map((element, i) => {
+                          return <>
+                            <tr>
+                              <td className="px-6 py-4 whitespace-nowrap text-6xl text-yellow-400 font-medium ">
+                                {element.ranked}
+                              </td>
+                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap flex md:justify-center">
+                                <div className='w-3/5   flex flex-col md:flex-row justify-left'>
+                                  <img className=" w-16 rounded-full" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" />
+                                  <div className='md:ml-6 mt-2 font-bold tracking-wide'>
+                                    <h3 >{element.name}</h3>
+                                    <h3 className='font-light mt-1 text-left'>7<sup>th</sup>Sem/B.E</h3>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
+                                4 / 5
+                              </td>
+                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
+                                23 Minutes
+                              </td>
+
+                              <td className="text-sm text-green-200 font-light px-6 py-4 whitespace-nowrap">
+                                Good
+                              </td>
+                            </tr>
+                          </>
+                        })}
+
                     </tbody>
                   </table>
                 </div>

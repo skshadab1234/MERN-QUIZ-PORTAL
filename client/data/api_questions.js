@@ -31,3 +31,27 @@ const QuestionsData = [
 
 
 export default QuestionsData;
+
+// import React, {useState, useEffect} from "react";
+// const QuestionsDatas = async () => {
+//     const {QuestionsData,setQuestion} = useState([])
+//     try {
+//       const response = await fetch("/QuestionsData", {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json"
+//           }
+//       })
+
+//       const getQuestionsData = await response.json();
+//       setQuestion(getQuestionsData)
+//     } catch (error) {
+//       console.log(error)
+//     }
+
+//     return QuestionsData
+    
+// }
+
+
+// export default QuestionsDatas
