@@ -81,6 +81,7 @@ export default function Header({token}){
                                     <span class="sr-only">Loading...</span>
                                   </div>
                                 </> : <>
+                                <h2 id="SaveAnswerRecord"> </h2>
                                   <img
                                 className="h-8 w-8 rounded-full"
                                 src="https://walldeco.id/themes/walldeco/assets/images/avatar-default.jpg"

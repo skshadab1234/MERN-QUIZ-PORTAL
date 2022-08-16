@@ -17,6 +17,7 @@ const Questions = ({ token }) => {
   const [showModal, setShowModal] = useState(false);
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
+  var answerData = []
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
   var currDate = datenow.getDate() + " " + monthNames[datenow.getMonth()] + "," + datenow.getFullYear()
@@ -42,9 +43,15 @@ const Questions = ({ token }) => {
                 settestRejection('taken')
               } else {
                 settestRejection('start')
-                userdata.UserTestResponse.map(resdata => {
-                  document.getElementById("optionselect" + resdata.questionId + resdata.answer).classList.add("border-indigo-500", "mix-blend-screen")
+                setTimeout(() => {
+                  // userdata.UserTestResponse.map(resdata => {
+                  //   if(document.getElementById("optionselect" + resdata.questionId + resdata.answer) != null) {
+                  //     document.getElementById("optionselect" + resdata.questionId + resdata.answer).classList.add("border-indigo-500", "mix-blend-screen")
+                  //   }
+                  //   // console.log(document.getElementById("optionselect" + resdata.questionId + resdata.answer).classList.add("hey"))
+                  // }, 2000)
                 })
+                
               }
             }
 
@@ -86,7 +93,6 @@ const Questions = ({ token }) => {
         if (data.testOn == 'false') {
           settestRejection("taken")
         }
-
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +105,8 @@ const Questions = ({ token }) => {
     callQuestionPage()
   }, [])
 
-  var answerData = []
+  
+  
   var flag = false
   const getAnswerChoose = async (answer, totalOpt, questionId) => {
     for (let index = 0; index < totalOpt; index++) {
@@ -107,7 +114,8 @@ const Questions = ({ token }) => {
     }
 
     document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen")
-
+    
+    var completeTime = Moment().format("LLL")
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
         flag = true
@@ -123,14 +131,12 @@ const Questions = ({ token }) => {
               answerData
             })
           })
-
+    
           const data = await res.json();
-        }, 5000);
-      } else {
-        flag = false
+        }, 2000);
       }
     })
-    var completeTime = Moment().format("LLL")
+
     if (flag == false) {
       answerData.push({ questionId, answer, completeTime })
       setTimeout(async () => {
@@ -144,12 +150,13 @@ const Questions = ({ token }) => {
             answerData
           })
         })
-
+  
         const data = await res.json();
-      }, 5000);
+      }, 2000);
     }
-
-
+    
+    console.log(answerData)
+   
   }
 
   const SubmitAnswertoDb = async () => {
