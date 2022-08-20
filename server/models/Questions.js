@@ -11,7 +11,7 @@ const Question = new mongoose.Schema({
 })
 
 //Model 
-const QuestionDb = mongoose.model("questionsDB", Question)
+const QuestionDb = mongoose.model("questionsdbs", Question)
 
 // export MODULE TO  USE IN OTHER FILES 
 module.exports = QuestionDb

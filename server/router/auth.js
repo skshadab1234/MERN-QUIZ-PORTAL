@@ -104,7 +104,6 @@ router.post("/settings", async (req,res) => {
     } catch (error) {
         res.status(400).send("Something went Wrong!!")
     }
-    
 })
 
 router.post("/getWinnersList", async (req,res) => {
@@ -112,28 +111,17 @@ router.post("/getWinnersList", async (req,res) => {
         const UserQuestionAnswerList = []
         const QuestionsFromClient = req.body
         const Results = await User.find()
+        const allquestion = QuestionsFromClient.QuestionsData
         Results.map((win_res, i) => {
-            const { candidate_name, email, SubmittedTime } = win_res
+            const { candidate_name, email, SubmittedTime, Semester, YearofStudy, score } = win_res
+            let SubmitTime = new Date(SubmittedTime).getTime() // Making time to Timestamp so that we can sort it on this basis only
             win_res.UserTestResponse.map((question,index) => {
                 const {questionId,answer} = question
-                UserQuestionAnswerList.push({questionId, answer, candidate_name, email, SubmittedTime})
+                UserQuestionAnswerList.push({candidate_name, email, Semester, score,  YearofStudy, SubmitTime, SubmittedTime, candidate_name, email })
             })
-            // List.push(win_res.UserTestResponse, win_res.candidate_name, win_res.email)
-        })
-        
-
-        // Yaha pe aab user ke answer aur databse ke question ko match krke answer choose krna hai 
-        const allquestion = QuestionsFromClient.QuestionsData
-        UserQuestionAnswerList.map((check_ans, i) => {
-            conosole.log(check_ans)
-            // const ClientQuestionNo = allquestion[i].questionId // Compare karne ke liye
-            // const correctOutput = allquestion[i].correctOutput
             
-            // console.log(check_ans.answer, correctOutput)
-            // if(check_ans.answer == correctOutput) {
-            // }
         })
-        
+        res.status(200).send(UserQuestionAnswerList)
     } catch (error) {
         res.status(400).send("Something went Wrong!!")
     }
@@ -141,6 +129,40 @@ router.post("/getWinnersList", async (req,res) => {
 })
 
 
+// Get Score of Each User and Update his score
+router.post("/GetUserScore", async (req,res) => {
+    try {
+        const {_id, UserTestResponse} = req.body.data
+        const allque = req.body.QuestionsData
+
+        // Check all answered questions with database correctanswer
+        let score = 0
+        UserTestResponse.map((res,i) => {
+            if(res.answer == allque[res.questionId - 1].correctOutput) {
+                score += 1
+            }
+        })
+        // console.log(score)
+        const updateScore = await User.updateOne({_id:_id}, {$set: { score:score }})
+
+        // Take this "score" and update it in database 
+        
+    } catch (error) {
+        res.send("Something went Wrong");
+    }
+})
+
+
+
+router.get("/ResetAllUserAnswer", async (req,res) => {
+    try {
+        
+        const updateData = await User.updateMany({}, {$set: { testOn : "true", UserTestResponse: [] }})
+        res.send(updateData)
+    } catch (error) {
+        res.send("Something went Wrong");
+    }
+})
 
 
 

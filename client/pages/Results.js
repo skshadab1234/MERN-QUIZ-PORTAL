@@ -2,28 +2,97 @@ import React, { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import Head from 'next/head'
 import QuestionsData from "../data/api_questions"
-
+import {useRouter} from 'next/router'
+import Moment from "moment";
+import settings from '../data/settings'
 const Results = ({ token }) => {
   const [ResultData, setResultData] = useState([])
-  var array = [
-    {
-      ranked: 4,
-      name: "Khan Shadab Alam",
-      Scored: "4/5",
-      completeTime: "33 Minutes",
-      performance: 'Good'
-    },
-    {
-      ranked: 5,
-      name: "Khan Mehtab",
-      Scored: "4/5",
-      completeTime: "33 Minutes",
-      performance: 'Good'
-    },
-  ]
+  const [userdata, setuserdata] = useState({})
+  const router = useRouter()
+  const settingsData = settings()
+  const [settingall, setSettings] = useState([])
+  
+  useEffect(() => {
+    settingsData.then(res => {
+      setSettings(res)
+    }).catch(err => console.log(err))
+  }, [])
+  
+  // console.log(settingall)
+  function getFirstString(text) {
+    if (text) {
+      var text_arr = text.split(" ");
+      return text_arr[0].charAt(0) + "" + text_arr[text_arr.length - 1].charAt(0);
+    }
+  }
+
+  function diff(start, end) {
+    start = start.split(":");
+    end = end.split(":");
+    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+    var diff = endDate.getTime() - startDate.getTime();
+    var hours = Math.floor(diff / 1000 / 60 / 60);
+    diff -= hours * 1000 * 60 * 60;
+    var minutes = Math.floor(diff / 1000 / 60);
+
+    // If using time pickers with 24 hours format, add the below line get exact hours
+    if (hours < 0)
+       hours = hours + 24;
+
+    return (hours <= 0 ? "" : (hours <= 9 ? "0" : "") + hours + " Hours ")   + (minutes <= 9 ? "0" : "") + minutes + ' Minutes';
+}
   const styles =
   {
     heading: "font-bold md:text-[64px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
+  }
+
+  const StoreUserScore = async () => {
+    // Get USer Details
+    try {
+      const response = await fetch("/profile", {
+        method: "GET",
+        headers: {
+          Accept: "appllication/json",
+          "Content-Type": "application/json"
+        },
+        credentials: "include"
+      }
+      )
+
+      const data = await response.json();
+      setuserdata(data);
+
+      if (!response.status === 200) {
+        throw new Error(response.error);
+        router.push("/Login")
+      }else{
+        // Getting User Score
+        try {
+          const res = await fetch("/GetUserScore", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              data,
+              QuestionsData
+            })
+          })
+          const scoreData = await res.json();
+          if (!scoreData.status === 200) {
+            throw new Error(scoreData.error);
+          } 
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      router.push("/Login")
+    }
+
+    
   }
 
   const callResultData = async () => {
@@ -31,28 +100,38 @@ const Results = ({ token }) => {
       const res = await fetch("/getWinnersList", {
         method: "POST",
         headers: {
-            "Content-Type" : "application/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           QuestionsData
         })
-    })
+      })
       const data = await res.json();
       if (!data.status === 200) {
         throw new Error(data.error);
       } else {
-        // setResultData(data);
+        setResultData(data);
+        
       }
     } catch (error) {
       console.log(error);
     }
   }
-  console.log(ResultData)
+
+
+  let sortedList = ResultData.filter((v,i,a)=>a.findIndex(v2=>['email'].every(k=>v2[k] ===v[k]))===i)
+
+  // Sorting Our Array in case of score and time taken 
+  sortedList.sort((a,b) => {
+    if (a.score == b.score) return a.SubmitTime - b.SubmitTime;
+    return b.score - a.score;
+  })
 
   useEffect(() => {
+    StoreUserScore()
     callResultData()
   }, [])
-
+  
   return (
     <>
       <Head>
@@ -68,51 +147,35 @@ const Results = ({ token }) => {
 
         <div className='grid grid-cols-1 gap-12 md:grid-cols-3 sm:grid-cols-1  p-4 mt-10 '>
 
-          <figure class="md:flex dark_theme rounded-xl p-8 md:p-0  relative md:scale-115">
-            <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full md:mx-0 mx-auto" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" width="384" height="512" />
-            <div class="pt-6 md:p-8 text-center md:text-left space-y-4 ">
-              <img src="https://www.picng.com/upload/gold_medal/png_gold_medal_82717.png" className='w-20 md:w-24 absolute -bottom-12 right-2  md:right-8' />
-              <figcaption class="font-medium">
-                <div class="text-sky-500 dark:text-sky-400">
-                  Khan Shadab Alam
-                </div>
-                <div class="text-slate-700 dark:text-slate-500">
-                  7 Sem/B.E
-                </div>
-              </figcaption>
-            </div>
-          </figure>
-
-          <figure class="md:flex dark_theme rounded-xl p-8 md:p-0  relative md:transform  md:translate-y-28  md:scale-65 order-0 md:order-first">
-            <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full md:mx-0 mx-auto" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" width="384" height="512" />
-            <div class="pt-6 md:p-8 text-center md:text-left space-y-4 ">
-              <img src="https://www.pngmart.com/files/21/2nd-Award-PNG-Clipart.png" className='w-20 md:w-24 absolute -bottom-12 right-2  md:right-8' />
-              <figcaption class="font-medium">
-                <div class="text-sky-500 dark:text-sky-400">
-                  Khan Shadab Alam
-                </div>
-                <div class="text-slate-700 dark:text-slate-500">
-                  7 Sem/B.E
-                </div>
-              </figcaption>
-            </div>
-          </figure>
-
-          <figure class="md:flex dark_theme rounded-xl p-8 md:p-0  relative md:transform  md:translate-y-28 md:scale-65 ">
-            <img class="w-24 h-24 md:w-48 md:h-auto md:rounded-none rounded-full md:mx-0 mx-auto" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" width="384" height="512" />
-            <div class="pt-6 md:p-8 text-center md:text-left space-y-4 ">
-              <img src="https://www.pngplay.com/wp-content/uploads/8/3rd-Place-Medal-Background-PNG-Image.png" className='w-16 md:w-24 absolute -bottom-10 right-2  md:right-8' />
-              <figcaption class="font-medium">
-                <div class="text-sky-500 dark:text-sky-400">
-                  Khan Shadab Alam
-                </div>
-                <div class="text-slate-700 dark:text-slate-500">
-                  7 Sem/B.E
-                </div>
-              </figcaption>
-            </div>
-          </figure>
-
+          {
+            sortedList.map((ele,index) => {
+              return index < 3 ? <>
+                 <figure className={`md:flex dark_theme rounded-xl p-8 md:p-0  relative ${index == 1 ? "order-0 md:order-first md:transform  md:translate-y-28  md:scale-[.9]" : index == 2 ? "md:transform  md:translate-y-28  md:scale-[.9] " : index == 0 ? "md:scale-[1.1]" : "" }`}>
+                  {/* <img className="w-28 h-28  md:w-38 md:h-auto md:rounded-none rounded-full md:mx-0 mx-auto" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" width="384" height="512" /> */}
+                  <div className='w-28 h-28  md:w-38 md:h-auto md:rounded-none rounded-full md:mx-0 mx-auto flex justify-center place-items-center border-r-2 border-indigo-400 bg-[#2C2448]'>
+                    <h2 className='text-4xl md:text-5xl font-bold text-white '>
+                      {getFirstString(ele.candidate_name)}
+                    </h2>
+                  </div>
+                  <div className="pt-6 md:p-8 text-center md:text-left space-y-4 ">
+                    <h1 className='font-bold text-8xl text-yellow-400 absolute right-5 -bottom-8 '>
+                      {index+1}
+                    </h1>
+                    <figcaption className="font-medium">
+                      <div className="text-sky-500 dark:text-sky-400">
+                        {ele.candidate_name}
+                      </div>
+                      <div className="text-slate-700 dark:text-slate-500">
+                        {ele.Semester} / {ele.YearofStudy}
+                        {diff(settingall.testTime , Moment(ele.SubmittedTime).format('LTS'))}
+                      </div>
+                    </figcaption>
+                  </div>
+                </figure>
+              </> : ""
+            })
+          }
+        
         </div>
 
         {/* View All Users Results  */}
@@ -144,33 +207,42 @@ const Results = ({ token }) => {
                     <tbody className='text-center'>
                       {
 
-                        array.map((element, i) => {
-                          return <>
-                            <tr>
-                              <td className="px-6 py-4 whitespace-nowrap text-6xl text-yellow-400 font-medium ">
-                                {element.ranked}
+                      sortedList.map((element, i) => {
+                          return i > 2 ? <>
+                            <tr >
+                              <td key={i} className="px-6 py-4 whitespace-nowrap text-6xl text-yellow-400 font-medium ">
+                                {i+1}
                               </td>
                               <td className="text-sm font-light px-6 py-4 whitespace-nowrap flex md:justify-center">
                                 <div className='w-3/5   flex flex-col md:flex-row justify-left'>
-                                  <img className=" w-16 rounded-full" src="https://pbs.twimg.com/profile_images/932986247642939392/CDq_0Vcw_400x400.jpg" alt="" />
-                                  <div className='md:ml-6 mt-2 font-bold tracking-wide'>
-                                    <h3 >{element.name}</h3>
-                                    <h3 className='font-light mt-1 text-left'>7<sup>th</sup>Sem/B.E</h3>
+                                <div className='w-16 h-16  md:w-18 md:h-auto  rounded-full md:mx-0 mx-auto flex justify-center place-items-center border-2 border-indigo-400 bg-[#2C2448]'>
+                                  <h2 className='text-md md:text-xl font-bold text-white'>
+                                    {getFirstString(element.candidate_name)}
+                                    {/* {element.score} */}
+                                  </h2>
+                                </div>
+                                  <div className='md:ml-6 mt-2 font-bold tracking-wide text-left'>
+                                    <h3 >{element.candidate_name}</h3>
+                                    <h3 className='font-light mt-1 text-left'>{element.Semester} / {element.YearofStudy}</h3>
                                   </div>
                                 </div>
                               </td>
+                             
                               <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                4 / 5
-                              </td>
-                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                23 Minutes
+                                {element.score} / {settingall.totalQuestion}
                               </td>
 
-                              <td className="text-sm text-green-200 font-light px-6 py-4 whitespace-nowrap">
-                                Good
+                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
+                                {diff(settingall.testTime , Moment(element.SubmittedTime).format('LTS'))}
+                              </td>
+
+                              <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
+                                {settingall.totalQuestion == element.score  ? <p className='text-green-500 text-lg font-bold'>Excellent</p> : 
+                                element.score == 0 ? <p className='text-red-500 text-lg font-bold'>Work Hard</p> : 
+                                <p className='text-orange-500 text-lg font-bold'>Good Job</p> }
                               </td>
                             </tr>
-                          </>
+                          </> : ''
                         })}
 
                     </tbody>

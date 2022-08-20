@@ -4,6 +4,7 @@ const set = new mongoose.Schema({
     testDate: {type:String},
     testGoing: {type:Boolean},
     testTime: {type:String},
+    totalQuestion:{type:Number}
 })
 
 

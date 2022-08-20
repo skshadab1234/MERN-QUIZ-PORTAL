@@ -154,7 +154,6 @@ const Questions = ({ token }) => {
       }, 2000);
     }
     
-    console.log(answerData)
    
   }
 
