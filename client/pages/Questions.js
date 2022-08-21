@@ -7,6 +7,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { AiOutlineFieldTime } from 'react-icons/ai'
 import Moment from "moment";
+import Countdown from 'react-countdown';
 
 
 const Questions = ({ token }) => {
@@ -30,40 +31,36 @@ const Questions = ({ token }) => {
       }
       else if (currDate == res.testDate) { // Current Date
         // console.log();
-        var currTime = Date.parse(currDate + " " + datenow.getHours() + ":" + datenow.getMinutes())
-        var DBTime = Date.parse(currDate + " " + res.testEndtime.substring(0, res.testEndtime.length - 3))
+        var currTime = Date.parse(currDate + " " + datenow.getHours() + ":" + datenow.getMinutes()+":" + datenow.getSeconds())
+        var DBTime = Date.parse(currDate + " " + res.testEndtime)
         if (currTime > DBTime) {
+          console.log(currTime, DBTime)
           settestRejection('endedTimeUp')
         } else {
           // agar time bada hai test end time ke tho test start krna hai
-          if (currTime > Date.parse(currDate + " " + res.testTime.substring(0, res.testTime.length - 3))) {
-            console.log();
+          if (currTime > Date.parse(currDate + " " + res.testTime)) {
             if (Object.keys(userdata).length > 0) {
               if (userdata.testOn == 'false') {
                 settestRejection('taken')
               } else {
                 settestRejection('start')
-                setTimeout(() => {
-                  // userdata.UserTestResponse.map(resdata => {
-                  //   if(document.getElementById("optionselect" + resdata.questionId + resdata.answer) != null) {
-                  //     document.getElementById("optionselect" + resdata.questionId + resdata.answer).classList.add("border-indigo-500", "mix-blend-screen")
-                  //   }
-                  //   // console.log(document.getElementById("optionselect" + resdata.questionId + resdata.answer).classList.add("hey"))
-                  // }, 2000)
-                })
-                
               }
             }
-
           } else {
             settestRejection("todayStart")
           }
         }
       } else {
-        settestRejection('onStart')
+        if (Object.keys(userdata).length > 0) {
+          if (userdata.testOn == 'false') {
+            settestRejection('taken')
+          } else {
+            settestRejection('onStart')
+          }
+        }
       }
     }).catch(err => console.log(err))
-  }, [userdata])
+  }, [userdata, settingall])
 
   const styles =
   {
@@ -103,8 +100,6 @@ const Questions = ({ token }) => {
     callQuestionPage()
   }, [])
 
-  
-  
   var flag = false
   var completeTime = Moment().format("LL")+" "+Moment().format('LTS');
 
@@ -179,13 +174,52 @@ const Questions = ({ token }) => {
     }
   }
 
+   // Random component
+   const Completionist = () => {
+    setInterval(() => {
+      settestRejection('endedTimeUp')
+      router.push("/Results")
+    }, 2000)
+   };
+
+   // Renderer callback with condition
+   const renderer = ({ hours, minutes, seconds, completed }) => {
+     if (completed) {
+       // Render a completed state
+       return <Completionist />;
+     } else {
+       var text_color = 'text-white ';
+        if(hours == 0 && minutes == 5) {
+          text_color = 'text-orange-500'
+        }
+        else if(hours == 0 && minutes == 0 && seconds < 60) {
+          text_color = 'text-red-500 animate-pulse'
+        }
+       // Render a countdown
+       if(hours < 10) {
+        hours = "0"+hours
+       }
+       if(minutes < 10) {
+        minutes = "0"+minutes
+       }
+       if(seconds < 10) {
+        seconds = "0"+seconds
+       }
+       return <h2 className={`${text_color} font-bold tracking-wider`}>{hours}:{minutes}:{seconds}</h2>;
+     }
+   };
+
+   let EndtimerSeconds = new Date(currDate+" "+settingall.testEndtime).getTime() - new Date().getTime()
+
+   const TimerData = <Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/>
+ 
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
         <title>Test Screen - CESA -CSMIT</title>
         <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
-      <Header token={token} />
+      <Header token={token} renderer={TimerData} />
       {isLoading ?
         <div className='flex justify-center h-80 place-items-center'>
           <svg class="inline mr-2 w-40 h-40 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -288,7 +322,7 @@ const Questions = ({ token }) => {
                             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
                               <h1 className='text-xl md:text-2xl'>Q{index + 1 + ') ' + question.question_name}</h1>
                               <img src={question.questionImage} className="w-full mt-6 md:object-contain object-none" />
-                              <h1 className='text-xl md:text-2xl mt-5'>Answer :</h1>
+                              <h1 className='text-xl md:text-2xl mt-5'>  Answer :</h1>
 
                               <div className='flex justify-center'>
                                 <div className='p-3 grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5'>

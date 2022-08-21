@@ -3,6 +3,27 @@
 * {
     font-family: 'Poppins', sans-serif;
 }
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #0d0620;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2A2440;
+    border-radius: 30px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
 body {
     background-color: #0d0620;
 }

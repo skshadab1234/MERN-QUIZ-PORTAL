@@ -2,7 +2,7 @@ import { Fragment, useContext, useState, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
 
-export default function Header({token}){
+export default function Header({token, renderer}){
   const [userdata, setuserdata] = useState([])
   const [profileLoading, setProfileLoading] = useState(true)
   const callData = async () => {
@@ -59,6 +59,9 @@ export default function Header({token}){
                 </div>
                 
               </div>
+              <div className='flex-1'>
+                {renderer}
+              </div>
             {token == '' ?  <>
               <img src={'/college.png'} width={250} height={60}   className="hidden lg:block"/>
               <img src={'/logo-sm.jpg'}  className="block lg:hidden  object-cover h-16 mt-5" />
@@ -81,7 +84,7 @@ export default function Header({token}){
                                     <span class="sr-only">Loading...</span>
                                   </div>
                                 </> : <>
-                                <h2 id="SaveAnswerRecord"> </h2>
+                                
                                   <img
                                 className="h-8 w-8 rounded-full"
                                 src="https://walldeco.id/themes/walldeco/assets/images/avatar-default.jpg"
