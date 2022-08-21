@@ -40,21 +40,22 @@ const Results = ({ token }) => {
     }
   }
 
+  function msToTime(duration) {
+    var  hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
+    var  minutes = Math.floor((duration / (1000 * 60)) % 60)
+  
+    hours = hours > 0 ? hours+" hrs " : (hours < 10 && hours != 0) ? "0" + hours : '';
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+  
+    return hours+minutes+" Minutes ";
+  }
+
   function diff(start, end) {
-    start = start.split(":");
-    end = end.split(":");
-    var startDate = new Date(0, 0, 0, start[0], start[1], 0);
-    var endDate = new Date(0, 0, 0, end[0], end[1], 0);
-    var diff = endDate.getTime() - startDate.getTime();
-    var hours = Math.floor(diff / 1000 / 60 / 60);
-    diff -= hours * 1000 * 60 * 60;
-    var minutes = Math.floor(diff / 1000 / 60);
-
-    // If using time pickers with 24 hours format, add the below line get exact hours
-    if (hours < 0)
-      hours = hours + 24;
-
-    return (hours <= 0 ? "" : (hours <= 9 ? "0" : "") + hours + " Hours ") + (minutes <= 9 ? "0" : "") + minutes + ' Minutes';
+    var starttime = new Date(start).getTime()
+    var endTime = new Date(end).getTime()
+    var timeDifference =  endTime - starttime
+    var difference =  msToTime(timeDifference)
+    return difference
   }
   const styles =
   {
@@ -193,7 +194,7 @@ const Results = ({ token }) => {
                         </h2>
                       </div>
                       <div className="pt-6 md:p-8 text-center md:text-left space-y-4 ">
-                        <h1 className='font-bold text-8xl text-yellow-400 absolute right-5 -bottom-8 '>
+                        <h1 className='font-bold text-8xl text-yellow-400 absolute right-5 -bottom-8 glow'>
                           {index + 1}
                         </h1>
                         <figcaption className="font-medium">
@@ -202,7 +203,8 @@ const Results = ({ token }) => {
                           </div>
                           <div className="text-slate-300 text-sm">
                             <h2>{ele.Semester} / {ele.YearofStudy}</h2>
-                            <h2>{diff(settingall.testTime, Moment(ele.SubmittedTime).format('LTS'))}</h2>
+                            
+                            <h2>{diff(Moment(settingall.testDate+' '+settingall.testTime).format('LLL'), Moment(ele.SubmittedTime).format('LLL'))}</h2>
                             {settingall.totalQuestion == ele.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
                               ele.score == 0 ? <p className='text-red-500 text-lg font-bold'>Work Hard</p> :
                                 <p className='text-orange-500 text-lg font-bold'>Good Job</p>}
@@ -271,7 +273,7 @@ const Results = ({ token }) => {
                                   </td>
 
                                   <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                    {diff(settingall.testTime, Moment(element.SubmittedTime).format('LTS'))}
+                                    <h2>{diff(Moment(settingall.testDate+' '+settingall.testTime).format('LLL'), Moment(element.SubmittedTime).format('LLL'))}</h2>
                                   </td>
 
                                   <td className="text-sm font-light px-6 py-4 whitespace-nowrap">

@@ -25,7 +25,7 @@ export default function Header({token, renderer}){
       console.log(error);
     }
   }
-  
+  const rrenderData = renderer
   useEffect(() => {
     callData()
   }, [])
@@ -60,7 +60,7 @@ export default function Header({token, renderer}){
                 
               </div>
               <div className='flex-1'>
-                {renderer}
+                {rrenderData}
               </div>
             {token == '' ?  <>
               <img src={'/college.png'} width={250} height={60}   className="hidden lg:block"/>

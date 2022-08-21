@@ -60,7 +60,7 @@ const Questions = ({ token }) => {
         }
       }
     }).catch(err => console.log(err))
-  }, [userdata, settingall])
+  }, [userdata])
 
   const styles =
   {
@@ -176,10 +176,11 @@ const Questions = ({ token }) => {
 
    // Random component
    const Completionist = () => {
-    setInterval(() => {
       settestRejection('endedTimeUp')
-      router.push("/Results")
-    }, 2000)
+      SubmitAnswertoDb()
+      setInterval(() => {
+        router.push('/Results')
+      }, 2000);
    };
 
    // Renderer callback with condition
@@ -205,13 +206,13 @@ const Questions = ({ token }) => {
        if(seconds < 10) {
         seconds = "0"+seconds
        }
-       return <h2 className={`${text_color} font-bold tracking-wider`}>{hours}:{minutes}:{seconds}</h2>;
+       return <h2 className={`${text_color} text-lg md:text-4xl font-bold tracking-wider`}>{hours}:{minutes}:{seconds}</h2>;
      }
    };
 
    let EndtimerSeconds = new Date(currDate+" "+settingall.testEndtime).getTime() - new Date().getTime()
 
-   const TimerData = <Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/>
+   
  
   return (
     <div className='md:container md:mx-auto mb-10'>
@@ -219,7 +220,7 @@ const Questions = ({ token }) => {
         <title>Test Screen - CESA -CSMIT</title>
         <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
-      <Header token={token} renderer={TimerData} />
+      <Header token={token}  />
       {isLoading ?
         <div className='flex justify-center h-80 place-items-center'>
           <svg class="inline mr-2 w-40 h-40 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -319,6 +320,9 @@ const Questions = ({ token }) => {
                         {QuestionsData.map((question, index) => {
                           return <>
 
+                              <nav className='dark_theme w-24 md:w-80 h-16 flex justify-center place-items-center fixed top-0 z-[9999] left-[30%] md:left-[40%]'>
+                                <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
+                              </nav>
                             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
                               <h1 className='text-xl md:text-2xl'>Q{index + 1 + ') ' + question.question_name}</h1>
                               <img src={question.questionImage} className="w-full mt-6 md:object-contain object-none" />

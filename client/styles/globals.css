@@ -44,6 +44,11 @@ body {
     font-weight: bold
 }
 
+.glow {
+  text-shadow: 0 0px 30px rgb(250 204 21/ 2);
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
