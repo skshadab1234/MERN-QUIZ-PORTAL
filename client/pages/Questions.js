@@ -320,7 +320,7 @@ const Questions = ({ token }) => {
                         {questionsLists.map((question, index) => {
                           return <>
 
-                              <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%]'>
+                              <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
                                 <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
                               </nav>
                             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
