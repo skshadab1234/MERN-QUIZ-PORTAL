@@ -10,7 +10,8 @@ const Registers = ({ token }) => {
         password: "cesa@1234",
         candidate_name: "",
         Semester: "",
-        YearofStudy: ""
+        YearofStudy: "",
+        Set : ''
         // year_sem: "",
     })
     const styles =
@@ -51,17 +52,57 @@ const Registers = ({ token }) => {
 
     }
 
+    
+    const YearofStudy = ['First Year', 'Second Year', 'Third Year', 'B.E']
+    const Semester = [1,2,3,4,5,6,7,8]
+    const Sets= [ 
+        {set: [1,2,3,4], difficulty: 'easy'},
+        {set: [1,2,3,4], difficulty: 'hard'},
+        {set: [1,2,3,4], difficulty: 'medium'},
+
+    ]
+
+    // Adding Study Year in Input Box 
+    const addYear = (year, addto) => {
+        document.getElementById("YearofStudy").value = year
+        for(let i = 0; i < YearofStudy.length; i++) {
+            document.getElementById("addYear"+i).classList.remove("border-indigo-500", "mix-blend-screen")
+        }
+        document.getElementById("addYear"+addto).classList.add("border-indigo-500", "mix-blend-screen")
+        inputsvalues.YearofStudy = year
+    }
+
+    const addSemester = (sem, addto) => {
+        document.getElementById("Semester").value = sem
+        for(let i = 0; i < Semester.length; i++) {
+            document.getElementById("addSem"+i).classList.remove("border-indigo-500", "mix-blend-screen")
+        }
+        document.getElementById("addSem"+addto).classList.add("border-indigo-500", "mix-blend-screen")
+        inputsvalues.Semester = sem
+    }
+
+    const addSet = (set, setno, addto) => {
+        document.getElementById("Sets").value = setno
+        for(let i = 0; i < Sets.length; i++) {
+            document.getElementById("addSet"+i).classList.remove("border-indigo-500", "mix-blend-screen")
+        }
+        document.getElementById("addSet"+addto).classList.add("border-indigo-500", "mix-blend-screen")
+        inputsvalues.Set = set
+    }
+
     useEffect(() => {
         callRegistersPage()
     }, [])
 
     const RegisterInput = [
         // { id: "year_sem", label: "Sem/Year", name: "year_sem", type: "text" },
-        { id: "candidate_name", label: "Candidate Name", name: "candidate_name", type: "text" },
-        { id: "email", label: "Email", name: "email", type: "email" },
-        { id: "YearofStudy", label: "Pursuing Year", name: "YearofStudy", type: "text" },
-        { id: "Semester", label: "Semester", name: "Semester", type: "number" },
+        { id: "candidate_name", label: "Candidate Name", name: "candidate_name", type: "text", disabled: false },
+        { id: "email", label: "Email", name: "email", type: "email", disabled: false },
+        { id: "YearofStudy", label: "Pursuing Year", name: "YearofStudy", type: "text", disabled: true },
+        { id: "Semester", label: "Semester", name: "Semester", type: "number", disabled: true },
+        { id: "Sets", label: "Sets", name: "Sets", type: "text", disabled: true },
     ]
+
 
     const handleChange = (e) => {
         const name = e.target.name
@@ -71,8 +112,8 @@ const Registers = ({ token }) => {
     
     const RegisterUser = async (e) => {
         e.preventDefault()
-        const { email, password, candidate_name, YearofStudy, Semester } = inputsvalues
-        if(email == "" || password == "" || candidate_name == "" || YearofStudy == "" || Semester == ""){
+        const { email, password, candidate_name, YearofStudy, Semester, Set } = inputsvalues
+        if(email == "" || password == "" || candidate_name == "" || YearofStudy == "" || Semester == "" || Set.length == 0){
             alert("Fields are empty")
         }else{
             const res = await fetch("/register", {
@@ -81,7 +122,7 @@ const Registers = ({ token }) => {
                     "Content-Type" : "application/json"
                 },
                 body: JSON.stringify({
-                    email, password, candidate_name, YearofStudy, Semester
+                    email, password, candidate_name, YearofStudy, Semester, Set
                 })
             })
 
@@ -93,10 +134,10 @@ const Registers = ({ token }) => {
             }
             document.getElementById('email').value = ''
             document.getElementById('candidate_name').value = ''
-            document.getElementById('YearofStudy').value = ''
-            document.getElementById('Semester').value = ''
-
+            inputsvalues.email = ''
+            inputsvalues.candidate_name = ''
         }
+        console.log(inputsvalues);
     }
     return (
         <div className='md:container md:mx-auto'>
@@ -115,6 +156,7 @@ const Registers = ({ token }) => {
                 <form method='post' onSubmit={RegisterUser}>
                     {
                         RegisterInput.map((input, i) => {
+                            
                             return <>
                                 <div className="mb-4">
                                     <label className={styles.label} htmlFor={input.id}>
@@ -124,7 +166,32 @@ const Registers = ({ token }) => {
                                         key={i}
                                         value={inputsvalues.name}
                                         onChange={handleChange}
-                                        className={styles.input} id={input.id} name={input.name} type={input.type} />
+                                        className={styles.input + (input.id == 'YearofStudy' ||  input.id == 'Semester' || input.id == 'Sets'  ? ' hidden' : "")}  id={input.id} name={input.name} type={input.type} disabled={input.disabled ?  "disabled" : ''} />
+                                        <div className={input.id == 'YearofStudy' ? "flex" : ''}>
+                                            
+                                    {
+                                        input.id == 'YearofStudy' ?
+                                        YearofStudy.map((year,i) => {
+                                            return <>
+                                                <h4 onClick={() =>  addYear(year, i)} id={`addYear${i}`} className='dark_bg mt-4 ml-3 p-2 w-25 text-sm rounded-lg cursor-pointer hover:animate-pulse' >{year}</h4>
+                                            </>
+                                        }) : input.id == 'Semester' ?  
+                                        Semester.map((sem,i) => {
+                                            return <>
+                                                <h4 onClick={() =>  addSemester(sem, i)} id={`addSem${i}`} className='dark_bg inline-flex w-20 justify-center mt-4 ml-3 p-2 w-25 text-sm rounded-lg cursor-pointer hover:animate-pulse' >{sem}</h4>
+                                            </>
+                                        }) : input.id == 'Sets' ? 
+                                        Sets.map((Set, i) => {
+                                            return <>
+                                            <h4 onClick={() =>  addSet(Set.set, 'Set '+(i+1), i)} id={`addSet${i}`} className='dark_bg inline-flex w-20 justify-center mt-4 ml-3 p-2 w-25 text-sm rounded-lg cursor-pointer hover:animate-pulse' >
+                                                Set {i+1} 
+                                            </h4>
+                                               
+                                            </>
+                                        }) : ''
+                                    }
+                                    
+                                    </div>
                                 </div>
                             </>
                         })

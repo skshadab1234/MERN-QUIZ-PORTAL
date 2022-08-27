@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs")
 const pageAuth = require("../middleware/pageAuth")
 
 router.post('/register', async (req,res) => {
-    const { email, candidate_name, password, Semester, YearofStudy } = req.body
+    const { email, candidate_name, password, Semester, YearofStudy, Set } = req.body
     const testOn = true 
     try {
         const UserExists = await User.findOne({email:email});
@@ -16,7 +16,7 @@ router.post('/register', async (req,res) => {
         {
             res.status(400).json({ message: "User Already Exists"});
         }else{
-            const user = new User({email, candidate_name, password, Semester, YearofStudy, testOn})
+            const user = new User({email, candidate_name, password, Semester, YearofStudy, testOn, questionsAssigned: Set})
             await user.save();
             res.status(200).json({ message: "Registered Successfully"});
         }
