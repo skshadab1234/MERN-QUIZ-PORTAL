@@ -2,7 +2,7 @@ import { Fragment, useContext, useState, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import Link from 'next/link'
 
-export default function Header({token, renderer}){
+export default function Header({token}){
   const [userdata, setuserdata] = useState([])
   const [profileLoading, setProfileLoading] = useState(true)
   const callData = async () => {
@@ -25,7 +25,6 @@ export default function Header({token, renderer}){
       console.log(error);
     }
   }
-  const rrenderData = renderer
   useEffect(() => {
     callData()
   }, [])
@@ -36,32 +35,32 @@ export default function Header({token, renderer}){
   
   return (
     
-    <Disclosure as="nav" className={"sticky top-0 dark_bg z-[999]"}>
+    <Disclosure as="nav" className={"sticky top-0 dark_bg z-[99999]"}>
         <>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 ">
-            <div className="relative flex items-center justify-between h-16">
-              <div className="flex-1 flex items-center   ">
-                <div className="flex-shrink-0 flex items-center">
+            <div className="relative flex justify-between">
+              <div className="flex-1 flex   ">
+                <div className="flex-shrink-0 flex ">
                   <Link href="/">
                   <img
-                    className="block lg:hidden h-8 w-auto cursor-pointer" 
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
-                    alt="Workflow"
+                    className="block   h-20 relative top-1 w-auto cursor-pointer" 
+                    src="web-logo.png"
+                    alt="C E S A Logo"
                   />
                   </Link>
-                  <Link href="/">
+                  {/* <Link href="/">
                   <img
                     className="hidden lg:block h-8 w-auto cursor-pointer"
                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
                     alt="Workflow"
                   />
-                  </Link>
+                  </Link> */}
                 </div>
                 
               </div>
-              <div className='flex-1'>
-                {rrenderData}
-              </div>
+              
             {token == '' ?  <>
               <img src={'/college.png'} width={250} height={60}   className="hidden lg:block"/>
               <img src={'/logo-sm.jpg'}  className="block lg:hidden  object-cover h-16 mt-5" />
@@ -70,7 +69,7 @@ export default function Header({token, renderer}){
                       <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
     
                         {/* Profile dropdown */}
-                        <Menu as="div" className="ml-3 relative">
+                        <Menu as="div" className="ml-3 relative md:w-full w-40 hidden md:block top-2">
                           <div>
                             <Menu.Button className="text-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                               <span className="sr-only">Open user menu</span>
@@ -89,7 +88,7 @@ export default function Header({token, renderer}){
                                 className="h-8 w-8 rounded-full"
                                 src="https://walldeco.id/themes/walldeco/assets/images/avatar-default.jpg"
                                 alt=""
-                              /> <h2 className='mt-1 ml-4'>{userdata.candidate_name}</h2>
+                              /> <h2 className='mt-1 ml-4  text-ellipsis overflow-hidden truncate  '>{userdata.candidate_name}</h2>
                                 </>
                               }
                             </Menu.Button>

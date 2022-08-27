@@ -48,6 +48,17 @@ body {
   text-shadow: 0 0px 30px rgb(250 204 21/ 2);
 }
 
+#my-canvas{
+  position: absolute;
+  width: 90%;
+  z-index: 99999;
+  height: 100vh;
+  opacity: 0;
+}
+
+#my-canvas.show-canvas{
+  opacity: 1;
+}
 
 @tailwind base;
 @tailwind components;

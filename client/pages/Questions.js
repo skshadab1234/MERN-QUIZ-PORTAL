@@ -18,6 +18,7 @@ const Questions = ({ token }) => {
   const [showModal, setShowModal] = useState(false);
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
+  const [questionsLists, setquestions] = useState([])
   var answerData = []
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
@@ -43,6 +44,10 @@ const Questions = ({ token }) => {
               if (userdata.testOn == 'false') {
                 settestRejection('taken')
               } else {
+                //  display question basis on databse assigned questions no 
+                var arr = userdata.questionsAssigned
+                const resultArr = QuestionsData.filter(f => arr.some(item => item === f.questionId))
+                setquestions(resultArr)
                 settestRejection('start')
               }
             }
@@ -64,7 +69,7 @@ const Questions = ({ token }) => {
 
   const styles =
   {
-    Options: "cursor-pointer flex justify-center h-40 place-items-center md:text-[6xl] text-7xl font-bold text-white rounded-lg  ml-0 md:ml-6 mt-10"
+    Options: "cursor-pointer flex justify-center h-40 place-items-center rounded-lg "
   }
   
   const callQuestionPage = async () => {
@@ -105,10 +110,10 @@ const Questions = ({ token }) => {
 
   const getAnswerChoose = async (answer, totalOpt, questionId) => {
     for (let index = 0; index < totalOpt; index++) {
-      document.getElementById("optionselect" + questionId + index).classList.remove("border-indigo-500", "mix-blend-screen")
+      document.getElementById("optionselect" + questionId + index).classList.remove("border-indigo-500", "mix-blend-screen", "text-gray-500")
     }
 
-    document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen")
+    document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
     
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
@@ -170,17 +175,13 @@ const Questions = ({ token }) => {
 
     } catch (error) {
       console.log(error);
-
     }
   }
 
    // Random component
    const Completionist = () => {
-      settestRejection('endedTimeUp')
-      SubmitAnswertoDb()
-      setInterval(() => {
-        router.push('/Results')
-      }, 2000);
+    SubmitAnswertoDb()
+     
    };
 
    // Renderer callback with condition
@@ -212,8 +213,7 @@ const Questions = ({ token }) => {
 
    let EndtimerSeconds = new Date(currDate+" "+settingall.testEndtime).getTime() - new Date().getTime()
 
-   
- 
+  
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
@@ -317,24 +317,26 @@ const Questions = ({ token }) => {
                       </div>
                     </div> :
                       testRejection == 'start' ? <>
-                        {QuestionsData.map((question, index) => {
+                        {questionsLists.map((question, index) => {
                           return <>
 
-                              <nav className='dark_theme w-24 md:w-80 h-16 flex justify-center place-items-center fixed top-0 z-[9999] left-[30%] md:left-[40%]'>
+                              <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%]'>
                                 <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
                               </nav>
                             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
-                              <h1 className='text-xl md:text-2xl'>Q{index + 1 + ') ' + question.question_name}</h1>
-                              <img src={question.questionImage} className="w-full mt-6 md:object-contain object-none" />
-                              <h1 className='text-xl md:text-2xl mt-5'>  Answer :</h1>
-
+                              <h1 className='text-sm md:text-xl'>Q{question.questionId  + ') ' + question.question_name}</h1>
+                              <img src={question.questionImage} className="w-full mt-6 " />
+                              <h1 className='text-sm md:text-xl mt-5'>  Answer :</h1>
                               <div className='flex justify-center'>
-                                <div className='p-3 grid grid-cols-2 gap-4 md:grid-cols-2 md:gap-5'>
+                                <div className='grid grid-cols-1 md:grid-cols-2 md:gap-5'>
                                   {
                                     (question.answers).map((answers, index_ans) => {
                                       return <>
                                         <div className={styles.Options} onClick={() => getAnswerChoose(index_ans, question.answers.length, question.questionId)}>
-                                          <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected mt-6 w-full h-full border-2 object-contain " />
+                                          {
+                                            question.type == 'image' ? <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected w-full h-full border-2 object-contain " />
+                                            : question.type == 'text' ? <div id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected font-light w-full h-auto p-10 border-2 flex justify-center items-center text-sm md:text-xl">{answers[index_ans]}</div> : 'Error'
+                                          }
                                         </div>
                                       </>
                                     })
@@ -394,6 +396,7 @@ const Questions = ({ token }) => {
                                       {"<<Back"}
                                     </button>
                                     <button
+                                      id="endTest"
                                       className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                       type="button"
                                       onClick={SubmitAnswertoDb}

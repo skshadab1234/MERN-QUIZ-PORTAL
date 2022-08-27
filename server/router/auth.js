@@ -157,7 +157,7 @@ router.post("/GetUserScore", async (req,res) => {
 router.get("/ResetAllUserAnswer", async (req,res) => {
     try {
         
-        const updateData = await User.updateMany({}, {$set: { testOn : "false", UserTestResponse: [{questionId:1, answer: 0, completeTime:"August 21, 2022 12:45:02 PM"}, {questionId:2, answer: 2, completeTime:"August 21, 2022 12:45:02 PM"}] }})
+        const updateData = await User.updateMany({}, {$set: { testOn : "true", UserTestResponse: [], SubmittedTime: "", score: 0 }})
         res.send(updateData)
     } catch (error) {
         res.send("Something went Wrong");

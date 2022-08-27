@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import settings from '../data/settings'
+import Moment from "moment";
+
 const Homepage = () => {
   
   const [timecuntdoum, settimer] = useState({
@@ -93,7 +95,7 @@ const Homepage = () => {
           <h1 className={styles.heading + " text-white"}>CESA</h1>
           <p className={styles.subHead}>PRESENTS</p>
           <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>CRACK IT IF YOU CAN</h1>
-          <p className={styles.subHead}>ON {Settings.testDate}</p>
+          <p className={styles.subHead}>on {Moment(Settings.testDate+" "+Settings.testTime).format('LLLL')}</p>
         </div>
       </div>
 

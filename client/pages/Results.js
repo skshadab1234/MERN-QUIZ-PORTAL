@@ -5,6 +5,8 @@ import QuestionsData from "../data/api_questions"
 import { useRouter } from 'next/router'
 import Moment from "moment";
 import settings from '../data/settings'
+import ConfettiGenerator from "confetti-js";
+
 const Results = ({ token }) => {
   const [ResultData, setResultData] = useState([])
   const [userdata, setuserdata] = useState({})
@@ -16,21 +18,29 @@ const Results = ({ token }) => {
   const timerLoad = setInterval(() => {
     if (timerend > 0) {
         timerend--
+        if(timerend < 10) {
+          timerend = "0"+timerend
+        }
         setTimerEnd(timerend)
     } else {
+      
       timerend = 0
     }
   }, 1000)
 
   useEffect(() => {
     clearInterval(timerLoad)
+    document.getElementById("my-canvas").classList.add("show-canvas")
+
   }, [timerend])
 
 
   useEffect(() => {
     settingsData.then(res => {
       setSettings(res)
+
     }).catch(err => console.log(err))
+    
   }, [])
 
   function getFirstString(text) {
@@ -78,7 +88,7 @@ const Results = ({ token }) => {
       const data = await response.json();
       setuserdata(data);
 
-      if (!response.status === 200) {
+      if (!data.status === 200) {
         throw new Error(response.error);
         router.push("/Login")
       } else {
@@ -98,6 +108,7 @@ const Results = ({ token }) => {
           if (!scoreData.status === 200) {
             throw new Error(scoreData.error);
           }
+          
         } catch (error) {
           console.log(error);
         }
@@ -111,6 +122,7 @@ const Results = ({ token }) => {
   }
 
   const callResultData = async () => {
+
     try {
       const res = await fetch("/getWinnersList", {
         method: "POST",
@@ -126,7 +138,14 @@ const Results = ({ token }) => {
         throw new Error(data.error);
       } else {
         setResultData(data);
-
+        const confettiSettings = { target: 'my-canvas', 
+        max: 130,
+        animate: true,
+        props: ['circle','square', 'traingle'],
+        colors: [[165,104,246],[230,61,135],[0,199,228],[253,214,126]],
+         };
+        const confetti = new ConfettiGenerator(confettiSettings);
+        confetti.render();
       }
     } catch (error) {
       console.log(error);
@@ -143,8 +162,11 @@ const Results = ({ token }) => {
 
   useEffect(() => {
     StoreUserScore()
-    callResultData()
-  }, [settingall])
+    setTimeout(() => {
+      callResultData()
+    }, 2000)
+
+  }, [])
 
   return (
     <>
@@ -153,6 +175,8 @@ const Results = ({ token }) => {
         <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
       <div className='md:container md:mx-auto mb-10'>
+        <canvas id="my-canvas"></canvas>
+
         <Header token={token} />
         {
           // check if test end time is greater than current time then show wait for Test Ending 
@@ -176,6 +200,7 @@ const Results = ({ token }) => {
           </> : 
           (typeof sortedList !== 'undefined' && sortedList.length > 0) ? 
           <>
+
             <div className='flex justify-center mt-8 '>
               {/* Rules Section  */}
               <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Congratulations!!</h1>
@@ -203,6 +228,7 @@ const Results = ({ token }) => {
                           </div>
                           <div className="text-slate-300 text-sm">
                             <h2>{ele.Semester} / {ele.YearofStudy}</h2>
+                            <h2>Score : {ele.score} / {settingall.totalQuestion}</h2>
                             
                             <h2>{diff(Moment(settingall.testDate+' '+settingall.testTime).format('LLL'), Moment(ele.SubmittedTime).format('LLL'))}</h2>
                             {settingall.totalQuestion == ele.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
@@ -219,7 +245,8 @@ const Results = ({ token }) => {
             </div>
 
             {/* View All Users Results  */}
-            <div className='relative md:top-[200px] top-[10px] w-full p-3  overflow-x-hidden'>
+            {
+              sortedList.length > 3 ?    <div className='relative md:top-[200px] top-[10px] w-full p-3  overflow-x-hidden'>
               <div className="flex flex-col ">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8 ">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -291,7 +318,9 @@ const Results = ({ token }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> : ""
+            }
+          
           </> : <div className="dark_theme relative top-[200px]">
                   <div className="mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8  text-center">
                     <h2 className="font-bold ">
