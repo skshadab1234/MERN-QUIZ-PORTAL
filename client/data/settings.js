@@ -7,7 +7,8 @@ const settings = async () => {
             }
         })
 
-        const getSettings = await response.json();
+        const getSettings = await response.json()
+        
         return getSettings
       } catch (error) {
         console.log(error)

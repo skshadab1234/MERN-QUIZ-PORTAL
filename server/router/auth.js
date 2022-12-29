@@ -68,6 +68,7 @@ router.post("/uploadTest", async (req,res) => {
     }
 })
 
+
 // Profile Page Router
 router.get("/profile", pageAuth, (req,res) => {
     res.send(req.rootUser)
@@ -78,6 +79,18 @@ router.get("/getdata", pageAuth, (req,res) => {
     res.send(req.rootUser)
     res.status(200).send("User Founded this user")
     // console.log(req.rootUser);
+})
+
+router.post("/UserFullList", async (req,res) => {
+   try {
+    const batch_number = req.body.value
+    const data = await User.find({myround_no:batch_number});
+    res.status(200).send(data)
+   }
+   catch { err =>  res.status(400).send("Something went Wrong")};
+
+   
+    
 })
 
 router.get("/logout", (req,res) => {
@@ -99,7 +112,7 @@ router.post("/EndTest", async (req,res) => {
 
 router.post("/settings", async (req,res) => {
     try {
-        const rootSettings = await Settings.findOne()
+        const rootSettings = await Settings.find()
         res.send(rootSettings)
     } catch (error) {
         res.status(400).send("Something went Wrong!!")
@@ -152,19 +165,14 @@ router.post("/GetUserScore", async (req,res) => {
     }
 })
 
-
-
 router.get("/ResetAllUserAnswer", async (req,res) => {
     try {
         
-        const updateData = await User.updateMany({}, {$set: { testOn : "true", UserTestResponse: [], SubmittedTime: "", score: 0 }})
+        const updateData = await User.updateMany({name:""}, {$set: { testOn: "true", UserTestResponse: [], SubmittedTime: '', score: 0}})
         res.send(updateData)
     } catch (error) {
         res.send("Something went Wrong");
     }
 })
-
-
-
 
 module.exports = router

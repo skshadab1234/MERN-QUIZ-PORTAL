@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema({
     UserTestResponse : {type: Array},
     SubmittedTime: {type: String},
     score: {type: Number},
-    questionsAssigned: {type: Array}
+    questionsAssigned: {type: Array},
+    myround_no: {type: Number}
 })
 
 // We are making our password hash

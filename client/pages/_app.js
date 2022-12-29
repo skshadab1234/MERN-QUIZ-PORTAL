@@ -1,7 +1,22 @@
+import { useEffect } from 'react';
+import Head from 'next/head'
 import '../styles/globals.css'
+import AOS from 'aos';
+import 'aos/dist/aos.css'
+
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    AOS.init();
+}, [])
   return (
-    <Component {...pageProps} />
+    <>
+      <Head>
+        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        
+      </Head>
+      <Component {...pageProps} />
+    </>
   )
 }
 

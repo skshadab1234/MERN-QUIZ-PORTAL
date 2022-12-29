@@ -14,12 +14,13 @@ const Questions = ({ token }) => {
   const [testRejection, settestRejection] = useState('')
   const [isLoading, setLoading] = useState(true)
   const [userdata, setuserdata] = useState([])
+  const [answerData, setanswerData] = useState([])
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
   const [questionsLists, setquestions] = useState([])
-  var answerData = []
+  
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
   var currDate = datenow.getDate() + " " + monthNames[datenow.getMonth()] + "," + datenow.getFullYear()
@@ -27,19 +28,19 @@ const Questions = ({ token }) => {
     settingsData.then(res => {
       setLoading(false)
       setSettings(res)
-      if (res.testGoing == false) {
+      if (settingall[userdata.myround_no - 1].testGoing == "false") {
         settestRejection('endedByAdmin')
       }
-      else if (currDate == res.testDate) { // Current Date
+      else if (currDate == settingall[userdata.myround_no - 1].testDate) { // Current Date
         // console.log();
         var currTime = Date.parse(currDate + " " + datenow.getHours() + ":" + datenow.getMinutes()+":" + datenow.getSeconds())
-        var DBTime = Date.parse(currDate + " " + res.testEndtime)
+        var DBTime = Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testEndtime)
         if (currTime > DBTime) {
           console.log(currTime, DBTime)
           settestRejection('endedTimeUp')
         } else {
           // agar time bada hai test end time ke tho test start krna hai
-          if (currTime > Date.parse(currDate + " " + res.testTime)) {
+          if (currTime > Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testTime)) {
             if (Object.keys(userdata).length > 0) {
               if (userdata.testOn == 'false') {
                 settestRejection('taken')
@@ -74,7 +75,7 @@ const Questions = ({ token }) => {
   
   const callQuestionPage = async () => {
     try {
-      const response = await fetch("/profile", {
+      await fetch("/profile", {
         method: "GET",
         headers: {
           Accept: "appllication/json",
@@ -82,18 +83,15 @@ const Questions = ({ token }) => {
         },
         credentials: "include"
       }
-      )
-      const data = await response.json();
-      if (!data.status === 200) {
-        throw new Error(data.error);
-        router.push("/Login")
-      } else {
-        setuserdata(data);
+      ).then(res => res.json())
+      .then(user_response => {
+        setuserdata(user_response);
+        setanswerData(user_response.UserTestResponse)
         setLoading(false)
-        if (data.testOn == 'false') {
+        if (user_response.testOn == 'false') {
           settestRejection("taken")
         }
-      }
+      })
 
     } catch (error) {
       console.log(error);
@@ -103,8 +101,7 @@ const Questions = ({ token }) => {
 
   useEffect(() => {
     callQuestionPage()
-  }, [])
-
+  }, [userdata])
   var flag = false
   var completeTime = Moment().format("LL")+" "+Moment().format('LTS');
 
@@ -114,6 +111,7 @@ const Questions = ({ token }) => {
     }
 
     document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
+   
     
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
@@ -137,6 +135,7 @@ const Questions = ({ token }) => {
     })
 
     if (flag == false) {
+      
       answerData.push({ questionId, answer, completeTime })
       setTimeout(async () => {
         const res = await fetch("/uploadTest", {
@@ -153,8 +152,6 @@ const Questions = ({ token }) => {
         const data = await res.json();
       }, 2000);
     }
-    
-   
   }
 
   const SubmitAnswertoDb = async () => {
@@ -181,7 +178,6 @@ const Questions = ({ token }) => {
    // Random component
    const Completionist = () => {
     SubmitAnswertoDb()
-     
    };
 
    // Renderer callback with condition
@@ -211,9 +207,9 @@ const Questions = ({ token }) => {
      }
    };
 
-   let EndtimerSeconds = new Date(currDate+" "+settingall.testEndtime).getTime() - new Date().getTime()
+  //  console.log(settingall[0]?.testEndtime)
+   let EndtimerSeconds = new Date(currDate+" "+settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
 
-  
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
@@ -275,7 +271,7 @@ const Questions = ({ token }) => {
                   </div>
                 </div> :
                 testRejection == 'endedByAdmin' ? <div className="dark_theme relative top-[200px]">
-                  <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
+                  <div className="max-w-7xl mx-auto py-12 px-4 text-center sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
                     <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
                       <span className="block text-gray-500 flex"> The admin may not have started the test <br /> or  <br />  it may have ended</span>
                     </h2>
@@ -295,8 +291,8 @@ const Questions = ({ token }) => {
                   testRejection == 'onStart' ? <div className="dark_theme relative top-[200px]">
                     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
-                        <span className="block text-gray-500 flex"> Get Ready on {Moment(settingall.testDate + " " + settingall.testTime).format("dddd")}</span>
-                        <span className="block text-indigo-600">This Page will Active on {Moment(settingall.testDate + " " + settingall.testTime).format("LLL")}</span>
+                        <span className="block text-gray-500 flex"> Get Ready on {}{Moment(settingall[userdata.myround_no - 1]?.testDate + " " + settingall[userdata.myround_no - 1]?.testTime).format("dddd")}</span>
+                        <span className="block text-indigo-600">This Page will Active on {Moment(settingall[userdata.myround_no - 1]?.testDate + " " + settingall[userdata.myround_no - 1]?.testTime).format("LLL")}</span>
                       </h2>
 
                     </div>
@@ -310,8 +306,8 @@ const Questions = ({ token }) => {
                         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
                           <div className="rounded-md shadow">
                             <h5 className='text-white font-bold text-xl'>Today </h5>
-                            <h5 className='text-white text-sm font-lighter text-xl'>Start : {Moment(currDate + " " + settingall.testTime).format("h:mm a")} </h5>
-                            <h5 className='text-white text-sm font-lighter text-xl'>End : {Moment(currDate + " " + settingall.testEndtime).format("h:mm a")} </h5>
+                            <h5 className='text-white text-sm font-lighter text-xl'>Start : {Moment(currDate + " " + settingall[userdata.myround_no - 1].testTime).format("h:mm a")} </h5>
+                            <h5 className='text-white text-sm font-lighter text-xl'>End : {Moment(currDate + " " + settingall[userdata.myround_no - 1].testEndtime).format("h:mm a")} </h5>
                           </div>
                         </div>
                       </div>

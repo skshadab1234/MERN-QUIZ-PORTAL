@@ -8,7 +8,7 @@ const Rules = ({ token }) => {
     const router = useRouter();
     const styles =
     {
-        heading: "font-bold md:text-[64px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
+        heading: "font-bold md:text-[46px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
     }
 
     const rules = [
@@ -30,18 +30,13 @@ const Rules = ({ token }) => {
 
     return (
         <div className='md:container md:mx-auto'>
-             <Head>
-                <title>Rules - CESA -CSMIT</title>
-                <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
-            </Head>
-            <Header token={token} />
             <div className='flex justify-center mt-8'>
                 {/* Rules Section  */}
                 <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>RULES</h1>
             </div>
 
             {/* RULES DISPLAY  */}
-            <div className='m-auto w-4/5 dark_theme h-3/5 p-5 md:p-10 mt-5 rounded-lg text-white'>
+            <div className='m-auto  dark_theme h-3/5 p-5 md:p-10 mt-5 rounded-lg text-white'>
                 {rules.map((r, i) => {
                     return <h4 key={i} className='mb-5 text-sm md:text-xl'>{i + 1 + ". " + r}</h4>
                 })}
