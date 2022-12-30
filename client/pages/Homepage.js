@@ -28,7 +28,7 @@ const Homepage = () => {
       setsettingsdata(res)
       setLoading(false)
     })
-  }, [settingsdata])
+  }, [])
 
   return (
     <div className="md:container md:mx-auto">
