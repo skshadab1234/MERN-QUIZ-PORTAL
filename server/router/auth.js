@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs")
 const pageAuth = require("../middleware/pageAuth")
 
 router.post('/register', async (req,res) => {
-    const { email, candidate_name, password, Semester, YearofStudy, Set } = req.body
+    const { email, candidate_name, password, Semester, YearofStudy, Sets, batch } = req.body
     const testOn = true 
     try {
         const UserExists = await User.findOne({email:email});
@@ -16,7 +16,7 @@ router.post('/register', async (req,res) => {
         {
             res.status(400).json({ message: "User Already Exists"});
         }else{
-            const user = new User({email, candidate_name, password, Semester, YearofStudy, testOn, questionsAssigned: Set})
+            const user = new User({email, candidate_name, password, Semester, YearofStudy, testOn, questionsAssigned: Set, myround_no: batch})
             await user.save();
             res.status(200).json({ message: "Registered Successfully"});
         }
@@ -126,11 +126,11 @@ router.post("/getWinnersList", async (req,res) => {
         const Results = await User.find()
         const allquestion = QuestionsFromClient.QuestionsData
         Results.map((win_res, i) => {
-            const { candidate_name, email, SubmittedTime, Semester, YearofStudy, score } = win_res
+            const { candidate_name, email, SubmittedTime, Semester, YearofStudy, score, myround_no } = win_res
             let SubmitTime = new Date(SubmittedTime).getTime() // Making time to Timestamp so that we can sort it on this basis only
             win_res.UserTestResponse.map((question,index) => {
                 const {questionId,answer} = question
-                UserQuestionAnswerList.push({candidate_name, email, Semester, score,  YearofStudy, SubmitTime, SubmittedTime, candidate_name, email })
+                UserQuestionAnswerList.push({candidate_name, email, Semester, score, YearofStudy, SubmitTime, SubmittedTime, candidate_name, email, myround_no })
             })
             
         })
@@ -152,14 +152,12 @@ router.post("/GetUserScore", async (req,res) => {
         let score = 0
         UserTestResponse.map((res,i) => {
             if(res.answer == allque[res.questionId - 1].correctOutput) {
-                score += 1
+                score += 4
             }
         })
         // console.log(score)
         const updateScore = await User.updateOne({_id:_id}, {$set: { score:score }})
-
         // Take this "score" and update it in database 
-        
     } catch (error) {
         res.send("Something went Wrong");
     }

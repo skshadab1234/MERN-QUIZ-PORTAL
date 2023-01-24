@@ -60,6 +60,11 @@ body {
   opacity: 1;
 }
 
+.list-decimal li{
+  margin-top: 10px;
+  color:#ddd
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import Head from "next/head"
+import RulesModal from './components/RulesModal';
 
 const competitors = () => {
     const [getUserList, setgetUserList] = useState([]);
@@ -12,7 +13,16 @@ const competitors = () => {
     const [currentuser, setcurrentuser] = useState([])
     const router = useRouter();
     const value = router.query.value;
-    
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const showModal = () => {
+        setModalVisible(true);
+        AOS.init(document.getElementById('RulesModal'));
+    };
+
+    const hideModal = () => {
+        setModalVisible(false);
+    };
     const UserLists = async () => {
         try {
             const response = await fetch("/UserFullList", {
@@ -21,16 +31,16 @@ const competitors = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                 value: value
+                    value: value
                 })
             }
             ).then(res => res.json())
-            .then(responseData => {
-                setgetUserList(responseData);
-                setLoading(false);
-            });
+                .then(responseData => {
+                    setgetUserList(responseData);
+                    setLoading(false);
+                });
 
-           
+
         } catch (error) {
             console.log(error);
         }
@@ -38,22 +48,22 @@ const competitors = () => {
         // Logged User Data 
         try {
             await fetch("/profile", {
-              method: "GET",
-              headers: {
-                Accept: "appllication/json",
-                "Content-Type": "application/json"
-              },
-              credentials: "include"
+                method: "GET",
+                headers: {
+                    Accept: "appllication/json",
+                    "Content-Type": "application/json"
+                },
+                credentials: "include"
             }
             ).then(res => res.json())
-            .then(user_response => {
-              setcurrentuser(user_response);
-            })
-      
-          } catch (error) {
+                .then(user_response => {
+                    setcurrentuser(user_response);
+                })
+
+        } catch (error) {
             console.log(error);
             router.push("/Login")
-          }
+        }
     };
 
     useEffect(() => {
@@ -61,23 +71,23 @@ const competitors = () => {
     }, [getUserList]);
 
     getUserList.sort((a, b) => a.myround_no - b.myround_no); // Sorting Array in presence of Round Number
-    
+
     return (
 
         <div className='md:container md:mx-auto'>
 
-<Head>
-      <title>Batch {value} Competitiors</title>
-      <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
-    </Head>
+            <Head>
+                <title>Batch {value} Competitiors</title>
+                <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
+            </Head>
             <Header />
 
             <div>
-                <h1  data-aos="fade-down"
+                <h1 data-aos="fade-down"
                     data-aos-offset="200"
                     data-aos-delay="400"
                     data-aos-duration="1000"
-                    className={"font-bold md:text-[46px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center  bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Competitors List - Batch {value}</h1> 
+                    className={"font-bold md:text-[46px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center  bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>Competitors List - Batch {value}</h1>
                 <div className="py-8"
                     data-aos="fade-up"
                     data-aos-offset="200"
@@ -90,7 +100,7 @@ const competitors = () => {
                                 <thead>
                                     <tr>
                                         <th className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
-                                           Batch No
+                                            Batch No
                                         </th>
                                         <th className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
                                             Candidate Name
@@ -144,11 +154,14 @@ const competitors = () => {
                                                         </td> */}
                                                         <td className="px-5 py-5  text-sm">
                                                             {
-                                                                userdata.SubmittedTime == '' ? 
-                                                                    <Link href={"/Questions"}>
-                                                                        {(userdata.candidate_name == currentuser.candidate_name) ? <a><button className='bg-[#2190FF] p-2 hover:bg-[#2170EE] rounded-full' >Start Finding</button></a> : '-'}
-                                                                    </Link>
-                                                                : "-"
+                                                                userdata.SubmittedTime == '' ?
+
+                                                                    <>
+                                                                        {(userdata.candidate_name == currentuser.candidate_name) ? <a><button onClick={showModal} className='bg-[#2190FF] p-2 hover:bg-[#2170EE] rounded-full'>Start Finding</button></a> : '-'}
+
+                                                                    </>
+
+                                                            : "-"
                                                             }
                                                         </td>
                                                     </tr>
@@ -159,13 +172,16 @@ const competitors = () => {
 
                                     }
                                 </tbody>
+                                
                             </table>
+                            <RulesModal isVisible={isModalVisible} onClose={hideModal} />
+
                         </div>
                     </div>
                 </div>
             </div>
 
-           
+
 
         </div>
 

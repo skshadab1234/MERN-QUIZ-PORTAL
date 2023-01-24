@@ -7,7 +7,7 @@ import Link from 'next/link'
 const user_settings = ({ token }) => {
     const router = useRouter()
     const [userdata, setuserdata] = useState([])
-    const [profileLoading, setProfileLoading] = useState(true)
+    const [Settingloading, setSettingloading] = useState(true)
     const callData = async () => {
       try {
         const response = await fetch("/profile", {
@@ -22,8 +22,8 @@ const user_settings = ({ token }) => {
           throw new Error(data.error)
           router.push("/Login")
         } else {
-          setProfileLoading(false)
           setuserdata(data)
+          setSettingloading(false)
         }
       } catch (error) {
         console.log(error);
@@ -35,6 +35,7 @@ const user_settings = ({ token }) => {
   return (
     <>
       {
+        Settingloading ? "Loading" : 
         userdata.email == 'ks615044@gmail.com' ? 
         <>
           <Head>
@@ -44,6 +45,7 @@ const user_settings = ({ token }) => {
 
             <div className='md:container md:mx-auto mb-10'>
               <Header token={token} />
+              
             </div>
         </> : <>
         <Head>

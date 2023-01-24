@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import settings from '../data/settings'
 import Moment from "moment";
-import Link from "next/link"
-import Rules from './Rules';
 import HeroSection from "./components/Header/HeroSection"
 import Footer from './components/Footer';
 import { useRouter } from 'next/router';
@@ -23,13 +21,13 @@ const Homepage = () => {
   {
     heading: "font-bold md:text-[46px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
   }
+  
   useEffect(() => {
     settings().then((res) => {
-      setsettingsdata(res)
+      setsettingsdata(res)  
       setLoading(false)
     })
-  }, [])
-
+  }, [settingsdata])
   return (
     <div className="md:container md:mx-auto">
       <HeroSection />

@@ -162,12 +162,12 @@ const Results = ({ token }) => {
   }
 
   let sortedList = ResultData.filter((v, i, a) => a.findIndex(v2 => ['email'].every(k => v2[k] === v[k])) === i)
-
   // Sorting Our Array in case of score and time taken 
   sortedList.sort((a, b) => {
     if (a.score == b.score) return a.SubmitTime - b.SubmitTime;
     return b.score - a.score;
   })
+  console.log(sortedList)
 
 
   useEffect(() => {
@@ -185,7 +185,7 @@ const Results = ({ token }) => {
         <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
       <div className='md:container md:mx-auto mb-10'>
-        {/* <canvas id="my-canvas"></canvas> */}
+        {/* <canvas id="my-canvas"></canvas> */}  
 
         <Header token={token} />
         {
@@ -237,11 +237,11 @@ const Results = ({ token }) => {
                                   {ele.candidate_name}
                                 </div>
                                 <div className="text-slate-300 text-sm">
-                                  <h2>{ele.Semester} / {ele.YearofStudy}</h2>
-                                  <h2>Score : {ele.score} / {settingall.totalQuestion}</h2>
+                                  <h2>{ele.Semester} / {ele.YearofStudy} (Batch - {ele.myround_no})</h2>
+                                  <h2>Score : {ele.score} / {settingall[ele.myround_no - 1].totalQuestion * 4}</h2>
 
-                                  <h2>{diff(Moment(settingall.testDate + ' ' + settingall.testTime).format('LLL'), Moment(ele.SubmittedTime).format('LLL'))}</h2>
-                                  {settingall.totalQuestion == ele.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
+                                  <h2>{diff(Moment(settingall[ele.myround_no - 1].testDate + ' ' + settingall[ele.myround_no - 1].testTime).format('LLL'), Moment(ele.SubmittedTime).format('LLL'))}</h2>
+                                  {(settingall[ele.myround_no - 1].totalQuestion * 4) == ele.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
                                     ele.score == 0 ? <p className='text-red-500 text-lg font-bold'>Work Hard</p> :
                                       <p className='text-orange-500 text-lg font-bold'>Good Job</p>}
                                 </div>
@@ -283,10 +283,9 @@ const Results = ({ token }) => {
                                 </thead>
                                 <tbody className='text-center'>
                                   {
-
                                     sortedList.map((element, i) => {
                                       return i > 2 ? <>
-                                        <tr >
+                                        <tr>
                                           <td key={i} className="px-6 py-4 whitespace-nowrap text-6xl text-yellow-400 font-medium ">
                                             {i + 1}
                                           </td>
@@ -300,21 +299,21 @@ const Results = ({ token }) => {
                                               </div>
                                               <div className='md:ml-6 mt-2 font-bold tracking-wide text-left'>
                                                 <h3 >{element.candidate_name}</h3>
-                                                <h3 className='font-light mt-1 text-left'>{element.Semester} / {element.YearofStudy}</h3>
+                                                <h3 className='font-light mt-1 text-left'>{element.Semester} / {element.YearofStudy} (Batch - {element.myround_no})</h3>
                                               </div>
                                             </div>
                                           </td>
 
                                           <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                            {element.score} / {settingall.totalQuestion}
+                                            {element.score} / {settingall[element.myround_no - 1].totalQuestion * 4}
                                           </td>
 
                                           <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                            <h2>{diff(Moment(settingall.testDate + ' ' + settingall.testTime).format('LLL'), Moment(element.SubmittedTime).format('LLL'))}</h2>
+                                            <h2>{diff(Moment(settingall[element.myround_no - 1].testDate + ' ' + settingall[element.myround_no - 1].testTime).format('LLL'), Moment(element.SubmittedTime).format('LLL'))}</h2>
                                           </td>
 
                                           <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                                            {settingall.totalQuestion == element.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
+                                            {settingall[element.myround_no - 1].totalQuestion * 4 == element.score ? <p className='text-green-500 text-lg font-bold'>Excellent</p> :
                                               element.score == 0 ? <p className='text-red-500 text-lg font-bold'>Work Hard</p> :
                                                 <p className='text-orange-500 text-lg font-bold'>Good Job</p>}
                                           </td>

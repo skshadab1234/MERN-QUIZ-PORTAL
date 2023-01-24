@@ -101,6 +101,7 @@ const Registers = ({ token }) => {
         { id: "YearofStudy", label: "Pursuing Year", name: "YearofStudy", type: "text", disabled: true },
         { id: "Semester", label: "Semester", name: "Semester", type: "number", disabled: true },
         { id: "Sets", label: "Sets", name: "Sets", type: "text", disabled: true },
+        { id: "Batch", label: "Batch", name: "batch", type: "text", disabled: false },
     ]
 
 
@@ -112,8 +113,8 @@ const Registers = ({ token }) => {
     
     const RegisterUser = async (e) => {
         e.preventDefault()
-        const { email, password, candidate_name, YearofStudy, Semester, Set } = inputsvalues
-        if(email == "" || password == "" || candidate_name == "" || YearofStudy == "" || Semester == "" || Set.length == 0){
+        const { email, password, candidate_name, YearofStudy, Semester, Set, batch } = inputsvalues
+        if(email == "" || password == "" || candidate_name == "" || YearofStudy == "" || Semester == "" || Set.length == 0 || batch == ''){
             alert("Fields are empty")
         }else{
             const res = await fetch("/register", {
@@ -122,7 +123,7 @@ const Registers = ({ token }) => {
                     "Content-Type" : "application/json"
                 },
                 body: JSON.stringify({
-                    email, password, candidate_name, YearofStudy, Semester, Set
+                    email, password, candidate_name, YearofStudy, Semester, Set, batch
                 })
             })
 
