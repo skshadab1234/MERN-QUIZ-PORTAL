@@ -1,49 +1,50 @@
 module.exports = () => {
+  const Base_Url = "https://ciiyc-backend.onrender.com"
   const rewrites = () => {
     return [
       {
         source: "/settings",
-        destination: "http://localhost:3001/settings",
+        destination: `${Base_Url}/settings`,
       },
       {
         source: "/login",
-        destination: "http://localhost:3001/login",
+        destination: `${Base_Url}/login`,
       },
       {
         source: "/profile",
-        destination: "http://localhost:3001/profile",
+        destination: `${Base_Url}/profile`,
       },
       {
         source: "/getdata",
-        destination: "http://localhost:3001/getdata",
+        destination: `${Base_Url}/getdata`,
       },
       {
         source: "/logout",
-        destination: "http://localhost:3001/logout",
+        destination: `${Base_Url}/logout`,
       },
       {
         source: "/register",
-        destination: "http://localhost:3001/register",
+        destination: `${Base_Url}/register`,
       },
       {
         source: "/uploadTest",
-        destination: "http://localhost:3001/uploadTest",
+        destination: `${Base_Url}/uploadTest`,
       },
       {
         source: "/EndTest",
-        destination: "http://localhost:3001/EndTest",
+        destination: `${Base_Url}/EndTest`,
       },
       {
         source: "/getWinnersList",
-        destination: "http://localhost:3001/getWinnersList",
+        destination: `${Base_Url}/getWinnersList`,
       },
       {
         source: "/GetUserScore",
-        destination: "http://localhost:3001/GetUserScore",
+        destination: `${Base_Url}/GetUserScore`,
       },
       {
         source: "/UserFullList",
-        destination: "http://localhost:3001/UserFullList",
+        destination: `${Base_Url}/UserFullList`,
       },
 
     ];
@@ -53,62 +54,3 @@ module.exports = () => {
   };
 };
 
-
-// Server
-
-// module.exports = () => {
-//   const rewrites = () => {
-//     return [
-//       {
-//         source: "/settings",
-//         destination: "https://ciiyc-2022.herokuapp.com/settings",
-//       },
-//       {
-//         source: "/login",
-//         destination: "https://ciiyc-2022.herokuapp.com/login",
-//       },
-//       {
-//         source: "/profile",
-//         destination: "https://ciiyc-2022.herokuapp.com/profile",
-//       },
-//       {
-//         source: "/getdata",
-//         destination: "https://ciiyc-2022.herokuapp.com/getdata",
-//       },
-//       {
-//         source: "/logout",
-//         destination: "https://ciiyc-2022.herokuapp.com/logout",
-//       },
-//       {
-//         source: "/register",
-//         destination: "https://ciiyc-2022.herokuapp.com/register",
-//       },
-//       {
-//         source: "/uploadTest",
-//         destination: "https://ciiyc-2022.herokuapp.com/uploadTest",
-//       },
-//       {
-//         source: "/EndTest",
-//         destination: "https://ciiyc-2022.herokuapp.com/EndTest",
-//       },
-//       {
-//         source: "/getWinnersList",
-//         destination: "https://ciiyc-2022.herokuapp.com/getWinnersList",
-//       },
-//       {
-//         source: "/GetUserScore",
-//         destination: "https://ciiyc-2022.herokuapp.com/GetUserScore",
-//       },
-//       {
-//         source: "/UserFullList",
-//         destination: "https://ciiyc-2022.herokuapp.com/UserFullList",
-//       },
-
-      
-    
-//     ];
-//   };
-//   return {
-//     rewrites,
-//   };
-// };

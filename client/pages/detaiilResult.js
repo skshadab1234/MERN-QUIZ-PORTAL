@@ -84,7 +84,7 @@ const detaiilResult = () => {
                 Detail Result
               </h1>
               <div className='dark_theme w-full p-2 rounded text-gray-200'>
-                <h2 className='p-3'>Your Score : {userdata.score}</h2>
+                <h2 className='p-3 text-2xl'>Your Score : {userdata.score}</h2>
               </div>
 
               {questionsLists.map((question, index) => {
