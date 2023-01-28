@@ -10,9 +10,7 @@ const detaiilResult = () => {
   const [questionsLists, setquestions] = useState([])
   const [userdata, setuserdata] = useState([])
   const [isLoading, setLoading] = useState(true)
-  const router = useRouter();
   const settingsData = settings()
-  const [settingall, setSettings] = useState([])
   const [answerData, setanswerData] = useState([])
 
   const styles =
@@ -36,11 +34,10 @@ const detaiilResult = () => {
           setuserdata(user_response);
           setanswerData(user_response.UserTestResponse)
           settingsData.then(res => {
-            setLoading(false)
-            setSettings(res)
             var arr = userdata.questionsAssigned
             const resultArr = QuestionsData.filter(f => arr.some(item => item === f.questionId))
             setquestions(resultArr)
+            setLoading(false)
           }).catch(err => console.log(err))
         })
 
@@ -51,8 +48,8 @@ const detaiilResult = () => {
   }
 
   useEffect(() => {
-    callQuestionPage()
-  }, [])
+    if(isLoading == true) callQuestionPage()
+  }, [userdata])
 
   return (
     <>
