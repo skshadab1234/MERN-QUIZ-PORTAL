@@ -52,7 +52,7 @@ const detaiilResult = () => {
 
   useEffect(() => {
     callQuestionPage()
-  }, [userdata])
+  }, [])
 
   return (
     <>
