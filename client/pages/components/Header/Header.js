@@ -64,10 +64,10 @@ export default function Header({ token }) {
             {token == '' ? <>
             </> :
               <>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto">
 
                   {/* Profile dropdown */}
-                  <Menu as="div" className="ml-3 relative md:w-full w-40 hidden md:block top-0">
+                  <Menu as="div" className="ml-3 relative md:w-full w-44 top-0 md:w-full">
                     <div>
                       <Menu.Button className="text-white flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white relative top-0">
                         <span className="sr-only">Open user menu</span>
@@ -83,10 +83,10 @@ export default function Header({ token }) {
                           </> : <>
 
                             <img
-                              className="h-8 w-8 rounded-full"
+                              className="h-6 w-6 md:w-8  md:h-8 rounded-full"
                               src="https://walldeco.id/themes/walldeco/assets/images/avatar-default.jpg"
                               alt=""
-                            /> <h2 className='mt-1 ml-4  text-ellipsis overflow-hidden truncate  '>{userdata.candidate_name}</h2>
+                            /> <h2 className='mt-[2px] ml-2 md:ml-3 md:mt-[5px] text-gray-200 text-ellipsis overflow-hidden truncate text-sm md:text-[16px] '>{userdata.candidate_name}</h2>
                           </>
                         }
                       </Menu.Button>
