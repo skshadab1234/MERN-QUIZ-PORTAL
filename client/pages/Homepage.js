@@ -4,7 +4,6 @@ import Moment from "moment";
 import HeroSection from "./components/Header/HeroSection"
 import Footer from './components/Footer';
 import { useRouter } from 'next/router';
-import { imageConfigDefault } from 'next/dist/shared/lib/image-config';
 
 const Homepage = () => {
   const [settingsdata, setsettingsdata] = useState([])

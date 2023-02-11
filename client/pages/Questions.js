@@ -95,7 +95,7 @@ const Questions = ({ token }) => {
   }
 
   useEffect(() => {
-    callQuestionPage()
+   if(testRejection == '') callQuestionPage()
   }, [userdata])
 
   var flag = false
@@ -205,7 +205,7 @@ const Questions = ({ token }) => {
 
   //  console.log(settingall[0]?.testEndtime)
    let EndtimerSeconds = new Date(currDate+" "+settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
-
+   console.log(testRejection);
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
