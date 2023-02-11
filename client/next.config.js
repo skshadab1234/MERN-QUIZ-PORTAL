@@ -1,6 +1,6 @@
 module.exports = () => {
-  // const Base_Url = "https://ciiyc-backend.onrender.com"
-  const Base_Url = 'http://localhost:3001/'
+  const Base_Url = "https://ciiyc-backend.onrender.com"
+  // const Base_Url = 'http://localhost:3001/'
   const rewrites = () => {
     return [
       {
