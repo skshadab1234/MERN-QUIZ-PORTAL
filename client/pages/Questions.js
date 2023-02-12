@@ -19,7 +19,16 @@ const Questions = ({ token }) => {
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
   const [questionsLists, setquestions] = useState([])
-  
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+
+
+  const handleNext = () => {
+    setCurrentQuestion(currentQuestion + 1);
+  };
+  const handlePrev = () => {
+    setCurrentQuestion(currentQuestion - 1);
+  };
+
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
   var currDate = datenow.getDate() + " " + monthNames[datenow.getMonth()] + "," + datenow.getFullYear()
@@ -98,6 +107,7 @@ const Questions = ({ token }) => {
    if(testRejection == '') callQuestionPage()
   }, [userdata])
 
+  // console.log(userdata.UserTestResponse)
   var flag = false
   var completeTime = Moment().format("LL")+" "+Moment().format('LTS');
 
@@ -309,47 +319,54 @@ const Questions = ({ token }) => {
                       </div>
                     </div> :
                       testRejection == 'start' ? <>
-                        {questionsLists.map((question, index) => {
-                          return <>
-
-                              <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
-                                <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
-                              </nav>
-                            <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
-                              <h1 className='text-sm md:text-xl'>Q{question.questionId  + ') ' + question.question_name}</h1>
-                              <img src={question.questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
-                              <h1 className='text-sm md:text-xl mt-5'>  Answer :</h1>
+                            <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
+                              <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
+                            </nav>
+                            <div  className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
+                              <h1 className='text-sm md:text-xl'>Q{questionsLists[currentQuestion].questionId  + ') ' + questionsLists[currentQuestion].question_name}</h1>
                               <div className='flex justify-center'>
                                 <div className='grid grid-cols-1 md:grid-cols-2 md:gap-5'>
-                                  {
-                                    (question.answers).map((answers, index_ans) => {
-                                      return <>
-                                        <div className={styles.Options} onClick={() => getAnswerChoose(index_ans, question.answers.length, question.questionId)}>
-                                          {
-                                            question.type == 'image' ? <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected w-full h-full border-2 object-contain " />
-                                            : question.type == 'text' ? <div id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected font-light w-full h-auto p-10 border-2 flex justify-center items-center text-sm md:text-xl">{answers[index_ans]}</div> : 'Error'
-                                          }
+                                  <img src={questionsLists[currentQuestion].questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                                  <div>
+                                   <h1 className='text-sm md:text-xl mt-5'>  Answer :</h1>
+                                    <div className='flex justify-center'>
+                                      <div className='grid grid-cols-1 md:gap-5'>
+                                      {
+                                          (questionsLists[currentQuestion].answers).map((answers, index_ans) => {
+                                            const userSelectedAnswer = userdata.UserTestResponse[currentQuestion]?.questionId == index_ans ? 'border-indigo-500 text-gray-500' : ''
+                                            console.log(userdata.UserTestResponse[currentQuestion]?.answer , index_ans)
+                                            return <>
+                                              <div className='w-full mt-3 mix-blend-screen' onClick={() => getAnswerChoose(index_ans, questionsLists[currentQuestion].answers.length, questionsLists[currentQuestion].questionId)}>
+                                                {
+                                                  questionsLists[currentQuestion].type == 'image' ? <img src={answers[index_ans]} id={`optionselect${questionsLists[currentQuestion].questionId + "" + index_ans}`} className="getSelected w-full h-full border-2 object-contain  rounded-full hover:bg-blue-200 cursor-pointer" />
+                                                  : questionsLists[currentQuestion].type == 'text' ? <div id={`optionselect${questionsLists[currentQuestion].questionId + "" + index_ans}`} className={`${userSelectedAnswer} getSelected font-light w-full h-auto p-10 border-2 flex justify-center rounded-full hover:bg-sky-600 cursor-pointer items-center text-sm md:text-xl`}>{answers[index_ans]}</div> : 'Error'
+                                                }
+                                              </div>
+                                            </>
+                                          })
+                                        }
+                                        <div className='flex justify-end mt-10'>
+                                          {currentQuestion !== 0 && ( <button onClick={handlePrev} className="mr-10" >Previous</button> )}
+                                          {currentQuestion !== questionsLists.length - 1 && ( <button type="button" class="bg-indigo-600 text-white text-lg leading-6 font-medium py-2 px-3 rounded-lg" onClick={handleNext}>Next</button> )}
                                         </div>
-                                      </>
-                                    })
-                                  }
-
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
 
                             </div>
 
-                          </>
 
-                        })
-                        }
+                     
                         <div className='flex justify-end mt-5'>
                           <button
                             className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
                             onClick={() => setShowModal(true)}
-                          >End Test</button>
+                            >End Test</button>
                         </div>
+                       
                         {showModal ? (
                           <>
                             <div
