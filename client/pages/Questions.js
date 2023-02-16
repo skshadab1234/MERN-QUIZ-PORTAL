@@ -8,6 +8,9 @@ import Link from 'next/link'
 import { AiOutlineFieldTime } from 'react-icons/ai'
 import Moment from "moment";
 import Countdown from 'react-countdown';
+import { Table, Button, Modal } from 'antd';
+
+
 
 const Questions = ({ token }) => {
   const [testRejection, settestRejection] = useState('')
@@ -21,13 +24,10 @@ const Questions = ({ token }) => {
   const [questionsLists, setquestions] = useState([])
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
-
-  const handleNext = () => {
-    setCurrentQuestion(currentQuestion + 1);
-  };
-  const handlePrev = () => {
-    setCurrentQuestion(currentQuestion - 1);
-  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedKey, setSelectedKey] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 3;
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
@@ -213,9 +213,47 @@ const Questions = ({ token }) => {
      }
    };
 
+
   //  console.log(settingall[0]?.testEndtime)
    let EndtimerSeconds = new Date(currDate+" "+settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
-   console.log(testRejection);
+   
+   const columns = [
+    {
+      title: 'Q.No',
+      dataIndex: 'questionId',
+      key: 'questionId',
+    },
+    {
+      title: 'Difficulty Level',
+      dataIndex: 'difficulty',
+      key: 'difficulty',
+    },
+    {
+      title: 'Programming Language',
+      dataIndex: 'languages',
+      key: 'languages',
+    },
+    {
+      title: 'Submitted',
+      dataIndex: 'Submitted',
+      key: 'Submitted',
+    },
+    {
+      title: 'Action',
+      key:  'action',
+      render: (text, record) => (
+        <>
+          <Button onClick={() => handleView(record.questionId)} className="text-white bg-green-800 border-none hover:bg-green-700 hover:text-white !important">View Questions</Button>
+        </>
+      ),
+    },
+  ];
+  
+  function handleView(key) {
+    setModalVisible(true);
+    setSelectedKey(key);
+  }
+
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
@@ -322,38 +360,43 @@ const Questions = ({ token }) => {
                             <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
                               <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
                             </nav>
-                            <div  className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
-                              <h1 className='text-sm md:text-xl'>Q{questionsLists[currentQuestion].questionId  + ') ' + questionsLists[currentQuestion].question_name}</h1>
-                              <div className='flex justify-center'>
-                                <div className='grid grid-cols-1 md:grid-cols-2 md:gap-5'>
-                                  <img src={questionsLists[currentQuestion].questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                            <div  className='dark_theme h-3/5 md:mt-10 rounded-lg text-white'>
+                            <Table dataSource={questionsLists} columns={columns} />
+
+                            {
+                              selectedKey != null ?   <Modal
+                              title={`Q.${questionsLists[selectedKey - 1]?.questionId}. ${questionsLists[selectedKey - 1]?.question_name} `}
+                              visible={modalVisible}
+                              // onOk={handleSave}
+                              onCancel={() => setModalVisible(false)}
+                              okButtonProps={{ disabled: false }}
+                              width={800}
+                            >
+                              
+                                <div >
+                                  <img src={questionsLists[selectedKey - 1].questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
                                   <div>
-                                   <h1 className='text-sm md:text-xl mt-5'>  Answer :</h1>
-                                    <div className='flex justify-center'>
+                                   <h1 className='text-sm md:text-xl mt-5 text-white'>  Answer :</h1>
                                       <div className='grid grid-cols-1 md:gap-5'>
                                       {
-                                          (questionsLists[currentQuestion].answers).map((answers, index_ans) => {
-                                            const userSelectedAnswer = userdata.UserTestResponse[currentQuestion]?.questionId == index_ans ? 'border-indigo-500 text-gray-500' : ''
-                                            console.log(userdata.UserTestResponse[currentQuestion]?.answer , index_ans)
+                                          (questionsLists[selectedKey - 1]?.answers).map((answers, index_ans) => {
+                                            const userSelectedAnswer = userdata.UserTestResponse[selectedKey - 1]?.questionId == index_ans ? 'border-indigo-500 text-gray-500' : ''
                                             return <>
-                                              <div className='w-full mt-3 mix-blend-screen' onClick={() => getAnswerChoose(index_ans, questionsLists[currentQuestion].answers.length, questionsLists[currentQuestion].questionId)}>
+                                              <div className='w-full mt-3 mix-blend-screen' onClick={() => getAnswerChoose(index_ans, questionsLists[selectedKey - 1]?.answers.length, questionsLists[selectedKey - 1].questionId)}>
                                                 {
-                                                  questionsLists[currentQuestion].type == 'image' ? <img src={answers[index_ans]} id={`optionselect${questionsLists[currentQuestion].questionId + "" + index_ans}`} className="getSelected w-full h-full border-2 object-contain  rounded-full hover:bg-blue-200 cursor-pointer" />
-                                                  : questionsLists[currentQuestion].type == 'text' ? <div id={`optionselect${questionsLists[currentQuestion].questionId + "" + index_ans}`} className={`${userSelectedAnswer} getSelected font-light w-full h-auto p-10 border-2 flex justify-center rounded-full hover:bg-sky-600 cursor-pointer items-center text-sm md:text-xl`}>{answers[index_ans]}</div> : 'Error'
+                                                  questionsLists[selectedKey - 1]?.type == 'image' ? <img src={answers[index_ans]}  className="getSelected w-full h-full border-2 object-contain  rounded-full hover:bg-blue-200 cursor-pointer" />
+                                                  : questionsLists[selectedKey - 1]?.type == 'text' ? <div  className={`${userSelectedAnswer} getSelected font-light w-full h-auto p-6 border border-gray-200 flex justify-center rounded-full text-white cursor-pointer items-center text-sm`}>{answers[index_ans]}</div> : 'Error'
                                                 }
                                               </div>
                                             </>
                                           })
                                         }
-                                        <div className='flex justify-end mt-10'>
-                                          {currentQuestion !== 0 && ( <button onClick={handlePrev} className="mr-10" >Previous</button> )}
-                                          {currentQuestion !== questionsLists.length - 1 && ( <button type="button" class="bg-indigo-600 text-white text-lg leading-6 font-medium py-2 px-3 rounded-lg" onClick={handleNext}>Next</button> )}
-                                        </div>
                                       </div>
-                                    </div>
                                   </div>
                                 </div>
-                              </div>
+                              
+                              </Modal> : ''
+                            }
 
                             </div>
 

@@ -31,8 +31,8 @@ body {
 .dark_bg{
     background-color: #0d0620;
 }
-.dark_theme{
-    background-color: #2A2440;
+.dark_theme, .ant-modal-content{
+    background-color: #2A2440!important;
 }
 
 .swal2-popup{
