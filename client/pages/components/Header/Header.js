@@ -84,7 +84,7 @@ export default function Header({ token }) {
 
                             <img
                               className="h-6 w-6 md:w-8  md:h-8 rounded-full"
-                              src="https://walldeco.id/themes/walldeco/assets/images/avatar-default.jpg"
+                              src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg"
                               alt=""
                             /> <h2 className='mt-[2px] ml-2 md:ml-3 md:mt-[5px] text-gray-200 text-ellipsis overflow-hidden truncate text-sm md:text-[16px] '>{userdata.candidate_name}</h2>
                           </>

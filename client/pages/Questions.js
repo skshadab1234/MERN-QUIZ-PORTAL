@@ -8,9 +8,6 @@ import Link from 'next/link'
 import { AiOutlineFieldTime } from 'react-icons/ai'
 import Moment from "moment";
 import Countdown from 'react-countdown';
-import { Table, Button, Modal } from 'antd';
-
-
 
 const Questions = ({ token }) => {
   const [testRejection, settestRejection] = useState('')
@@ -22,24 +19,20 @@ const Questions = ({ token }) => {
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
   const [questionsLists, setquestions] = useState([])
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedKey, setSelectedKey] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 3;
+  const lettersArray = Array.from({ length: 26 }, (_, i) => String.fromCharCode(i + 65));
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
   var currDate = datenow.getDate() + " " + monthNames[datenow.getMonth()] + "," + datenow.getFullYear()
   // useEffect(() => {
-  
+
   // }, [userdata])
 
   const styles =
   {
     Options: "cursor-pointer flex justify-center h-40 place-items-center rounded-lg "
   }
+
   
   const callQuestionPage = async () => {
     try {
@@ -52,50 +45,59 @@ const Questions = ({ token }) => {
         credentials: "include"
       }
       ).then(res => res.json())
-      .then(user_response => {
-        setuserdata(user_response);
-        setanswerData(user_response.UserTestResponse)
-        settingsData.then(res => {
-          setLoading(false)
-          setSettings(res)
-          // console.log(currDate , settingall[userdata.myround_no - 1].testDate);
-          if (settingall[userdata.myround_no - 1].testGoing === false) {
-            settestRejection('endedByAdmin')
-          } else if (currDate == settingall[userdata.myround_no - 1].testDate) { // Current Date
-            var currTime = Date.parse(currDate + " " + datenow.getHours() + ":" + datenow.getMinutes()+":" + datenow.getSeconds())
-            var DBTime = Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testEndtime)
-            if (currTime > DBTime) {
-              settestRejection('endedTimeUp')
-            } else {
-              // agar time bada hai test end time ke tho test start krna hai
-              if (currTime > Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testTime)) {
-                if (Object.keys(userdata).length > 0) { 
-                  if (userdata.testOn == 'false') {
-                    settestRejection('taken')
-                  } else {
-                    // Display question basis on database assigned questions no 
-                    var arr = userdata.questionsAssigned
-                    const resultArr = QuestionsData.filter(f => arr.some(item => item === f.questionId))
-                    setquestions(resultArr)
-                    settestRejection('start')
-                  }
-                }
+        .then(user_response => {
+          setuserdata(user_response);
+          setanswerData(user_response.UserTestResponse)
+          settingsData.then(res => {
+            setLoading(false)
+            setSettings(res)
+            // console.log(currDate , settingall[userdata.myround_no - 1].testDate);
+            if (settingall[userdata.myround_no - 1].testGoing === false) {
+              settestRejection('endedByAdmin')
+            } else if (currDate == settingall[userdata.myround_no - 1].testDate) { // Current Date
+              var currTime = Date.parse(currDate + " " + datenow.getHours() + ":" + datenow.getMinutes() + ":" + datenow.getSeconds())
+              var DBTime = Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testEndtime)
+              if (currTime > DBTime) {
+                settestRejection('endedTimeUp')
               } else {
-                settestRejection("todayStart")
+                // agar time bada hai test end time ke tho test start krna hai
+                if (currTime > Date.parse(currDate + " " + settingall[userdata.myround_no - 1].testTime)) {
+                  if (Object.keys(userdata).length > 0) {
+                    if (userdata.testOn == 'false') {
+                      settestRejection('taken')
+                    } else {
+                      // Display question basis on database assigned questions no 
+                      var arr = userdata.questionsAssigned
+                      const resultArr = QuestionsData.filter(f => arr.some(item => item === f.questionId))
+                      setquestions(resultArr)
+                      setTimeout(() => {
+                        userdata.UserTestResponse.map(item => {
+                          // console.log(document.getElementById('questionId'+item.questionId))
+                           document.getElementById('questionId'+item.questionId).innerHTML = 'Answer '+lettersArray[item.answer]+' Saved to Record'
+                           document.getElementById("optionselect" + item.questionId + item.answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
+
+                        })
+                      }, 2000);
+                      settestRejection('start')
+                     
+                    }
+                  }
+                } else {
+                  settestRejection("todayStart")
+                }
+              }
+            } else {
+              if (Object.keys(userdata).length > 0) {
+                if (userdata.testOn == 'false') {
+                  settestRejection('taken')
+                }
               }
             }
-          } else {
-            if (Object.keys(userdata).length > 0) {
-              if (userdata.testOn == 'false') {
-                settestRejection('taken')
-              }
-            }
+          }).catch(err => console.log(err))
+          if (user_response.testOn == 'false') {
+            settestRejection("taken")
           }
-        }).catch(err => console.log(err))
-        if (user_response.testOn == 'false') {
-          settestRejection("taken")
-        }
-      })
+        })
 
     } catch (error) {
       console.log(error);
@@ -104,12 +106,11 @@ const Questions = ({ token }) => {
   }
 
   useEffect(() => {
-   if(testRejection == '') callQuestionPage()
+    if (testRejection == '') callQuestionPage()
   }, [userdata])
 
-  // console.log(userdata.UserTestResponse)
   var flag = false
-  var completeTime = Moment().format("LL")+" "+Moment().format('LTS');
+  var completeTime = Moment().format("LL") + " " + Moment().format('LTS');
 
   const getAnswerChoose = async (answer, totalOpt, questionId) => {
     for (let index = 0; index < totalOpt; index++) {
@@ -117,10 +118,11 @@ const Questions = ({ token }) => {
     }
 
     document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
-   
-    
+
+
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
+        document.getElementById('questionId'+questionId).innerHTML = 'Updating Answer.....'
         flag = true
         answerData[i].answer = answer
         setTimeout(async () => {
@@ -134,14 +136,19 @@ const Questions = ({ token }) => {
               answerData
             })
           })
-    
+
           const data = await res.json();
+          if(res.status == 200) {
+           const addStatusofQuestion =  data.answerData.filter(item => item.questionId == questionId)
+           document.getElementById('questionId'+addStatusofQuestion[0].questionId).innerHTML = 'Answer '+lettersArray[answer]+' Saved to Record'
+          }
+
         }, 2000);
       }
     })
 
     if (flag == false) {
-      
+      document.getElementById('questionId'+questionId).innerHTML = 'Updating Answer.....'
       answerData.push({ questionId, answer, completeTime })
       setTimeout(async () => {
         const res = await fetch("/uploadTest", {
@@ -154,8 +161,13 @@ const Questions = ({ token }) => {
             answerData
           })
         })
-  
+
         const data = await res.json();
+        if(res.status == 200) {
+          const addStatusofQuestion =  data.answerData.filter(item => item.questionId == questionId)
+          console.log(addStatusofQuestion);
+          document.getElementById('questionId'+addStatusofQuestion[0].questionId).innerHTML = 'Answer '+lettersArray[answer]+' Saved to Record'
+         }
       }, 2000);
     }
   }
@@ -169,7 +181,7 @@ const Questions = ({ token }) => {
         },
         body: JSON.stringify({
           "_id": userdata._id,
-          "SubmittedTime":completeTime
+          "SubmittedTime": completeTime
         })
       }
       )
@@ -181,86 +193,49 @@ const Questions = ({ token }) => {
     }
   }
 
-   // Random component
-   const Completionist = () => {
+  // Random component
+  const Completionist = () => {
     SubmitAnswertoDb()
-   };
+  };
 
-   // Renderer callback with condition
-   const renderer = ({ hours, minutes, seconds, completed }) => {
-     if (completed) {
-       // Render a completed state
-       return <Completionist />;
-     } else {
-       var text_color = 'text-white ';
-        if(hours == 0 && minutes == 5) {
-          text_color = 'text-orange-500'
-        }
-        else if(hours == 0 && minutes == 0 && seconds < 60) {
-          text_color = 'text-red-500 animate-pulse'
-        }
-       // Render a countdown
-       if(hours < 10) {
-        hours = "0"+hours
-       }
-       if(minutes < 10) {
-        minutes = "0"+minutes
-       }
-       if(seconds < 10) {
-        seconds = "0"+seconds
-       }
-       return <h2 className={`${text_color} text-lg md:text-4xl font-bold tracking-wider`}>{hours}:{minutes}:{seconds}</h2>;
-     }
-   };
-
+  // Renderer callback with condition
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a completed state
+      return <Completionist />;
+    } else {
+      var text_color = 'text-white ';
+      if (hours == 0 && minutes == 5) {
+        text_color = 'text-orange-500'
+      }
+      else if (hours == 0 && minutes == 0 && seconds < 60) {
+        text_color = 'text-red-500 animate-pulse'
+      }
+      // Render a countdown
+      if (hours < 10) {
+        hours = "0" + hours
+      }
+      if (minutes < 10) {
+        minutes = "0" + minutes
+      }
+      if (seconds < 10) {
+        seconds = "0" + seconds
+      }
+      return <h2 className={`${text_color} text-lg md:text-4xl font-bold tracking-wider`}>{hours}:{minutes}:{seconds}</h2>;
+    }
+  };
 
   //  console.log(settingall[0]?.testEndtime)
-   let EndtimerSeconds = new Date(currDate+" "+settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
-   
-   const columns = [
-    {
-      title: 'Q.No',
-      dataIndex: 'questionId',
-      key: 'questionId',
-    },
-    {
-      title: 'Difficulty Level',
-      dataIndex: 'difficulty',
-      key: 'difficulty',
-    },
-    {
-      title: 'Programming Language',
-      dataIndex: 'languages',
-      key: 'languages',
-    },
-    {
-      title: 'Submitted',
-      dataIndex: 'Submitted',
-      key: 'Submitted',
-    },
-    {
-      title: 'Action',
-      key:  'action',
-      render: (text, record) => (
-        <>
-          <Button onClick={() => handleView(record.questionId)} className="text-white bg-green-800 border-none hover:bg-green-700 hover:text-white !important">View Questions</Button>
-        </>
-      ),
-    },
-  ];
+  let EndtimerSeconds = new Date(currDate + " " + settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
   
-  function handleView(key) {
-    setModalVisible(true);
-    setSelectedKey(key);
-  }
-
+ 
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
         <title>Test Screen - CESA -CSMIT</title>
         <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
-      <Header token={token}  />
+      <Header token={token} />
       {isLoading ?
         <div className='flex justify-center h-80 place-items-center'>
           <svg class="inline mr-2 w-40 h-40 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -335,7 +310,7 @@ const Questions = ({ token }) => {
                   testRejection == 'onStart' ? <div className="dark_theme relative top-[200px]">
                     <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
                       <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:tracking-tight">
-                        <span className="block text-gray-500 flex"> Get Ready on {}{Moment(settingall[userdata.myround_no - 1]?.testDate + " " + settingall[userdata.myround_no - 1]?.testTime).format("dddd")}</span>
+                        <span className="block text-gray-500 flex"> Get Ready on { }{Moment(settingall[userdata.myround_no - 1]?.testDate + " " + settingall[userdata.myround_no - 1]?.testTime).format("dddd")}</span>
                         <span className="block text-indigo-600">This Page will Active on {Moment(settingall[userdata.myround_no - 1]?.testDate + " " + settingall[userdata.myround_no - 1]?.testTime).format("LLL")}</span>
                       </h2>
 
@@ -357,59 +332,49 @@ const Questions = ({ token }) => {
                       </div>
                     </div> :
                       testRejection == 'start' ? <>
+                        {questionsLists.map((question, index) => {
+                          return <>
                             <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
-                              <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer}/></h1>
+                              <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer} /></h1>
                             </nav>
-                            <div  className='dark_theme h-3/5 md:mt-10 rounded-lg text-white'>
-                            <Table dataSource={questionsLists} columns={columns} />
+                            <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
+                              <h1 className='text-sm md:text-xl'>Q{question.questionId + ') ' + question.question_name}</h1>
+                              <img src={question.questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                              <div className='flex  justify-between'>
+                                <h1 className='text-sm md:text-xl mt-5'>  Answer : </h1>
+                                <p className='mt-5 text-xl' id={`questionId${question.questionId}`}></p>
+                              </div>
+                              <div className='flex justify-center'>
+                                <div className='grid grid-cols-1 md:grid-cols-2 md:gap-5'>
+                                  {
+                                    (question.answers).map((answers, index_ans) => {
+                                      return <>
+                                        <div className={styles.Options} onClick={() => getAnswerChoose(index_ans, question.answers.length, question.questionId)}>
+                                          {
+                                            question.type == 'image' ? <img src={answers[index_ans]} id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected w-full h-full border-2 object-contain " />
+                                              : question.type == 'text' ? <div id={`optionselect${question.questionId + "" + index_ans}`} className="getSelected font-light w-full h-auto p-10 border-2 flex justify-center items-center text-sm md:text-xl">{answers[index_ans]}</div> : 'Error'
+                                          }
+                                        </div>
+                                      </>
+                                    })
+                                  }
 
-                            {
-                              selectedKey != null ?   <Modal
-                              title={`Q.${questionsLists[selectedKey - 1]?.questionId}. ${questionsLists[selectedKey - 1]?.question_name} `}
-                              visible={modalVisible}
-                              // onOk={handleSave}
-                              onCancel={() => setModalVisible(false)}
-                              okButtonProps={{ disabled: false }}
-                              width={800}
-                            >
-                              
-                                <div >
-                                  <img src={questionsLists[selectedKey - 1].questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
-                                  <div>
-                                   <h1 className='text-sm md:text-xl mt-5 text-white'>  Answer :</h1>
-                                      <div className='grid grid-cols-1 md:gap-5'>
-                                      {
-                                          (questionsLists[selectedKey - 1]?.answers).map((answers, index_ans) => {
-                                            const userSelectedAnswer = userdata.UserTestResponse[selectedKey - 1]?.questionId == index_ans ? 'border-indigo-500 text-gray-500' : ''
-                                            return <>
-                                              <div className='w-full mt-3 mix-blend-screen' onClick={() => getAnswerChoose(index_ans, questionsLists[selectedKey - 1]?.answers.length, questionsLists[selectedKey - 1].questionId)}>
-                                                {
-                                                  questionsLists[selectedKey - 1]?.type == 'image' ? <img src={answers[index_ans]}  className="getSelected w-full h-full border-2 object-contain  rounded-full hover:bg-blue-200 cursor-pointer" />
-                                                  : questionsLists[selectedKey - 1]?.type == 'text' ? <div  className={`${userSelectedAnswer} getSelected font-light w-full h-auto p-6 border border-gray-200 flex justify-center rounded-full text-white cursor-pointer items-center text-sm`}>{answers[index_ans]}</div> : 'Error'
-                                                }
-                                              </div>
-                                            </>
-                                          })
-                                        }
-                                      </div>
-                                  </div>
                                 </div>
-                              
-                              </Modal> : ''
-                            }
+                              </div>
 
                             </div>
 
+                          </>
 
-                     
+                        })
+                        }
                         <div className='flex justify-end mt-5'>
                           <button
                             className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
                             onClick={() => setShowModal(true)}
-                            >End Test</button>
+                          >End Test</button>
                         </div>
-                       
                         {showModal ? (
                           <>
                             <div

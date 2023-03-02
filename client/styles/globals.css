@@ -65,6 +65,12 @@ body {
   color:#ddd
 }
 
+.ant-table-cell-row-hover {
+  color: #2A2440;
+}
+.xpWfed {
+  display: none!important
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

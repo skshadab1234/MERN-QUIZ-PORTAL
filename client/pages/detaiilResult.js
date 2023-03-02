@@ -12,6 +12,7 @@ const detaiilResult = () => {
   const [isLoading, setLoading] = useState(true)
   const settingsData = settings()
   const [answerData, setanswerData] = useState([])
+  const [settingsdb, setsettingsdb] = useState([])
 
   const styles =
   {
@@ -34,6 +35,7 @@ const detaiilResult = () => {
           setuserdata(user_response);
           setanswerData(user_response.UserTestResponse)
           settingsData.then(res => {
+            setsettingsdb(res)
             var arr = userdata.questionsAssigned
             const resultArr = QuestionsData.filter(f => arr.some(item => item === f.questionId))
             setquestions(resultArr)
@@ -59,7 +61,7 @@ const detaiilResult = () => {
       </Head>
       {
 
-        isLoading ? <div class="text-center">
+        isLoading && (settingsdb.length > 0) ? <div class="text-center">
           <div role="status">
             <svg aria-hidden="true" class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -67,12 +69,10 @@ const detaiilResult = () => {
             </svg>
             <span class="sr-only">Loading...</span>
           </div>
-        </div> :
-
+        </div> : settingsdb[userdata.myround_no - 1]?.testGoing == false  ? 
           userdata.SubmittedTime != '' ? <div className='md:container md:mx-auto'>
-
             <Header />
-            <div>
+            <div className='mb-10'>
               <h1 data-aos="fade-down"
                 data-aos-offset="200"
                 data-aos-delay="400"
@@ -81,12 +81,19 @@ const detaiilResult = () => {
                 Detail Result
               </h1>
               <div className='dark_theme w-full p-2 rounded text-gray-200'>
-                <h2 className='p-3 text-2xl'>Your Score : {userdata.score}</h2>
+                <h2 className='p-3 text-2xl'>Your Score : {userdata.score} out of {settingsdb[userdata.myround_no - 1]?.totalQuestion * 4 }</h2>
               </div>
 
               {questionsLists.map((question, index) => {
+                const sortedDbQuetion = [...answerData].sort((a, b) => a.questionId - b.questionId);
+                let correctStatus = 'dark_theme';
+                sortedDbQuetion.map((element, i) => {
+                  if (element.questionId === (index + 1) && question.correctOutput == element.answer)  {
+                    correctStatus = 'bg-green-700'
+                  } 
+                })
                 return <>
-                  <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
+                  <div key={index} className={ ` ${correctStatus} h-3/5 p-10  mt-5 rounded-lg text-white`}>
                     <h1 className='text-sm md:text-xl'>Q{question.questionId + ') ' + question.question_name}</h1>
                     <div className='flex justify-center'>
                       <div className='grid grid-cols-1 md:grid-cols-2 md:gap-5'>
@@ -111,8 +118,8 @@ const detaiilResult = () => {
                     <div className='mt-10'>
                       <div className='flex justify-between'>
                         <h2 className='text-2xl text-gray-200 border-b-2 border-sky-200'>Correct Answer {'->'}  {alphabets[question.correctOutput]}</h2>
-                        <h2 className='text-2xl text-gray-200 border-b-2 border-sky-200'>You Selected:  {'->'}{answerData.map((element, i) => {
-                          if (i === index) {
+                        <h2 className='text-2xl text-gray-200 border-b-2 border-sky-200'>You Selected:  {'->'}{sortedDbQuetion.map((element, i) => {
+                          if (element.questionId === (index + 1)) {
                             return alphabets[element.answer];
                           }
                         })}
@@ -139,7 +146,17 @@ const detaiilResult = () => {
                 </Link>
               </div>
             </div>
-
+          : <div className='flex items-center justify-center h-screen'>
+          <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Let Admin Windup the session</h5>
+            <Link href="/">
+              <a  class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Back to Homepage
+                <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+              </a>
+            </Link>
+          </div>
+        </div>
 
 
       }

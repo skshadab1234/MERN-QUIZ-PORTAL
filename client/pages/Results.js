@@ -6,7 +6,7 @@ import QuestionsData from "../data/api_questions"
 import { useRouter } from 'next/router'
 import Moment from "moment";
 import settings from '../data/settings'
-import ConfettiGenerator from "confetti-js";
+import resultJsonData from './resultJson.json'
 
 const Results = ({ token }) => {
   const [ResultData, setResultData] = useState([])
@@ -16,6 +16,11 @@ const Results = ({ token }) => {
   const [settingall, setSettings] = useState([])
   let [timerend, setTimerEnd] = useState(10)
   const [AdminEventWindupPermission, setAdminEventWindupPermission] = useState(false)
+ 
+
+  resultJsonData['GoogleSheetData'].map(res => {
+    console.log(res)
+  })
 
   const timerLoad = setInterval(() => {
     if (timerend > 0) {
@@ -167,7 +172,7 @@ const Results = ({ token }) => {
     if (a.score == b.score) return a.SubmitTime - b.SubmitTime;
     return b.score - a.score;
   })
-  console.log(sortedList)
+  
 
 
   useEffect(() => {

@@ -62,9 +62,10 @@ router.post("/uploadTest", async (req,res) => {
     try {
         const {_id, answerData} = req.body
         const updateData = await User.updateOne({_id}, {$set: { UserTestResponse : answerData}})
-        res.status(200).send("Submitted")
+        res.status(200).send({message: 'Submitted', answerData})
     } catch (error) {
-        res.status(400).send("Something went Wrong");
+        res.status(499).send({message: 'err'})
+
     }
 })
 
