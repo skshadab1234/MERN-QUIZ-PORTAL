@@ -19,6 +19,9 @@ const Questions = ({ token }) => {
   const settingsData = settings()
   const [settingall, setSettings] = useState([])
   const [questionsLists, setquestions] = useState([])
+  const [Answered, setAnswered] = useState(0)
+  const [NotAnswered, setNotAnswered] = useState(0)
+  const [endTestInfoModal, setendTestInfoModal] = useState(false)
   const lettersArray = Array.from({ length: 26 }, (_, i) => String.fromCharCode(i + 65));
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -33,7 +36,7 @@ const Questions = ({ token }) => {
     Options: "cursor-pointer flex justify-center h-40 place-items-center rounded-lg "
   }
 
-  
+
   const callQuestionPage = async () => {
     try {
       await fetch("/profile", {
@@ -73,13 +76,17 @@ const Questions = ({ token }) => {
                       setTimeout(() => {
                         userdata.UserTestResponse.map(item => {
                           // console.log(document.getElementById('questionId'+item.questionId))
-                           document.getElementById('questionId'+item.questionId).innerHTML = 'Answer '+lettersArray[item.answer]+' Saved to Record'
-                           document.getElementById("optionselect" + item.questionId + item.answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
+                          const el = document.getElementById('questionId' + item.questionId);
+                          if (typeof el === 'object' && el !== null) {
+                            document.getElementById('questionId' + item.questionId).innerHTML = '<div>Answer ' + lettersArray[item.answer] + ' Saved to Record</div>'
+                            document.getElementById("optionselect" + item.questionId + item.answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
+
+                          }
 
                         })
                       }, 2000);
                       settestRejection('start')
-                     
+
                     }
                   }
                 } else {
@@ -122,7 +129,7 @@ const Questions = ({ token }) => {
 
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
-        document.getElementById('questionId'+questionId).innerHTML = 'Updating Answer.....'
+        document.getElementById('questionId' + questionId).innerHTML = 'Updating Answer.....'
         flag = true
         answerData[i].answer = answer
         setTimeout(async () => {
@@ -138,9 +145,9 @@ const Questions = ({ token }) => {
           })
 
           const data = await res.json();
-          if(res.status == 200) {
-           const addStatusofQuestion =  data.answerData.filter(item => item.questionId == questionId)
-           document.getElementById('questionId'+addStatusofQuestion[0].questionId).innerHTML = 'Answer '+lettersArray[answer]+' Saved to Record'
+          if (res.status == 200) {
+            const addStatusofQuestion = data.answerData.filter(item => item.questionId == questionId)
+            document.getElementById('questionId' + addStatusofQuestion[0].questionId).innerHTML = 'Answer ' + lettersArray[answer] + ' Saved to Record'
           }
 
         }, 2000);
@@ -148,7 +155,7 @@ const Questions = ({ token }) => {
     })
 
     if (flag == false) {
-      document.getElementById('questionId'+questionId).innerHTML = 'Updating Answer.....'
+      document.getElementById('questionId' + questionId).innerHTML = 'Updating Answer.....'
       answerData.push({ questionId, answer, completeTime })
       setTimeout(async () => {
         const res = await fetch("/uploadTest", {
@@ -163,11 +170,11 @@ const Questions = ({ token }) => {
         })
 
         const data = await res.json();
-        if(res.status == 200) {
-          const addStatusofQuestion =  data.answerData.filter(item => item.questionId == questionId)
+        if (res.status == 200) {
+          const addStatusofQuestion = data.answerData.filter(item => item.questionId == questionId)
           console.log(addStatusofQuestion);
-          document.getElementById('questionId'+addStatusofQuestion[0].questionId).innerHTML = 'Answer '+lettersArray[answer]+' Saved to Record'
-         }
+          document.getElementById('questionId' + addStatusofQuestion[0].questionId).innerHTML = 'Answer ' + lettersArray[answer] + ' Saved to Record'
+        }
       }, 2000);
     }
   }
@@ -198,6 +205,15 @@ const Questions = ({ token }) => {
     SubmitAnswertoDb()
   };
 
+  function getUserTestResponses() {
+    setShowModal(true)
+    callQuestionPage().then(res => {
+      setAnswered(userdata.UserTestResponse.length)
+      setNotAnswered(questionsLists.length - userdata.UserTestResponse.length)
+    })
+    
+  }
+
   // Renderer callback with condition
   const renderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
@@ -205,8 +221,12 @@ const Questions = ({ token }) => {
       return <Completionist />;
     } else {
       var text_color = 'text-white ';
-      if (hours == 0 && minutes == 5) {
-        text_color = 'text-orange-500'
+      if (hours == 0 && minutes < 5) {
+        text_color = 'text-red-500';
+        setendTestInfoModal(false)
+        if(minutes==4 && seconds >= 55) {
+          setendTestInfoModal(true)
+        }
       }
       else if (hours == 0 && minutes == 0 && seconds < 60) {
         text_color = 'text-red-500 animate-pulse'
@@ -227,8 +247,9 @@ const Questions = ({ token }) => {
 
   //  console.log(settingall[0]?.testEndtime)
   let EndtimerSeconds = new Date(currDate + " " + settingall[userdata.myround_no - 1]?.testEndtime).getTime() - new Date().getTime()
+
   
- 
+  
   return (
     <div className='md:container md:mx-auto mb-10'>
       <Head>
@@ -331,7 +352,9 @@ const Questions = ({ token }) => {
                         </div>
                       </div>
                     </div> :
-                      testRejection == 'start' ? <>
+                      testRejection == 'start' ? 
+                        userdata.status == 1 ? 
+                      <>
                         {questionsLists.map((question, index) => {
                           return <>
                             <nav className='dark_theme w-2/5 md:w-80 h-16 flex justify-center place-items-center fixed top-2 z-[9999] right-[5%] md:left-[40%] z-[99999]'>
@@ -339,7 +362,9 @@ const Questions = ({ token }) => {
                             </nav>
                             <div key={index} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
                               <h1 className='text-sm md:text-xl'>Q{question.questionId + ') ' + question.question_name}</h1>
-                              <img src={question.questionImage} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                              {
+                                question.questionImage == '' ? '' : <img src={`https://ciiyc.vercel.app/${question.questionImage}`} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                              }
                               <div className='flex  justify-between'>
                                 <h1 className='text-sm md:text-xl mt-5'>  Answer : </h1>
                                 <p className='mt-5 text-xl' id={`questionId${question.questionId}`}></p>
@@ -372,7 +397,7 @@ const Questions = ({ token }) => {
                           <button
                             className="bg-pink-500 text-white active:bg-pink-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                             type="button"
-                            onClick={() => setShowModal(true)}
+                            onClick={getUserTestResponses}
                           >End Test</button>
                         </div>
                         {showModal ? (
@@ -385,8 +410,8 @@ const Questions = ({ token }) => {
                                 <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                   {/*header*/}
                                   <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
-                                    <h3 className="text-3xl font-semibold">
-                                      Would You Like to End Test?
+                                    <h3 className="text-2xl font-bold text-gray-600">
+                                      Almost there!
                                     </h3>
                                     <button
                                       className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -398,10 +423,15 @@ const Questions = ({ token }) => {
                                     </button>
                                   </div>
                                   {/*body*/}
-                                  <div className="relative p-6 flex-auto">
+                                  <div className="relative p-4 flex-auto">
                                     <p className="my-4 text-slate-500 text-lg leading-relaxed">
-                                      Review Your answers before Submitting the test.
+                                      Don't forget to review your work before ending the test. Check for any mistakes or incomplete answers.
                                     </p>
+                                    <div>
+                                      <h1><b>Total Questions: </b> {questionsLists.length}</h1>
+                                      <h1 className='text-green-500'><b>You Answerd: </b> {Answered}</h1>
+                                      <h1 className='text-red-500'><b>Not Answered: </b> {NotAnswered}</h1>
+                                    </div>
                                   </div>
                                   {/*footer*/}
                                   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -427,7 +457,72 @@ const Questions = ({ token }) => {
                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                           </>
                         ) : null}
-                      </> : "Something Went Wrong"
+
+                        {endTestInfoModal ? (
+                          <>
+                            <div
+                              className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                            >
+                              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                                {/*content*/}
+                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                  {/*header*/}
+                                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                                    <h3 className="text-3xl font-semibold">
+                                      5 Minutes Left: Important Reminder for Coders
+                                    </h3>
+                                    <button
+                                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                      onClick={() => setendTestInfoModal(false)}
+                                    >
+                                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                        ×
+                                      </span>
+                                    </button>
+                                  </div>
+                                  {/*body*/}
+                                  {/*footer*/}
+                                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                    <button
+                                      className="text-white bg-green-500 rounded font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                      type="button"
+                                      onClick={() => setendTestInfoModal(false)}
+                                    >
+                                      {"Ok"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                          </>
+                        ) : null}
+
+                      </> : <div class="bg-red-200 shadow-md rounded px-8 pt-6 m-2 pb-8 mb-4 mt-14 ">
+                                            <div class="-mx-3 mb-6" >
+                                                <div class="px-3 mb-6 md:mb-0 text-center border-b-2 p-4">
+                                                    <div class="text-center flex justify-center">
+                                                        <div className='w-20 bg-red-300 p-4 rounded-full'>
+                                                            <h2 className='text-3xl font-bold text-red-800'>X</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div className='mt-3'>
+                                                        <p className='text-red-800'>Sorry to inform you that your account has been blocked by the Admin. To get more information regarding the block and to seek further assistance, please reach out to the Admin directly. Thank you.</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div className='mx-10 mt-10'>
+                                                    <h1 className='font-bold'>May be blocked for this reasons</h1>
+                                                    <ul className='list-disc mt-2'>
+                                                        <li>Violation of the terms and conditions of the event</li>
+                                                        <li>Suspicious activity or cheating during the event</li>
+                                                        <li>Use of inappropriate language or behavior towards other participants</li>
+                                                        <li>Sharing answers or colluding with other participants</li>
+                                                        <li>Non-compliance with the instructions or guidelines provided during the event</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div> : "Something Went Wrong"
 
 
           }

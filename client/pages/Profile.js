@@ -56,8 +56,8 @@ const Profile = ({ token }) => {
   return (
     <div className='md:container md:mx-auto'>
       <Head>
-                <title>{userdata.candidate_name} Profile - CESA -CSMIT</title>
-                <link rel="icon" type="image/x-icon"  href='logo-sm.jpg' />
+        <title>{userdata.candidate_name} Profile - CESA -CSMIT</title>
+        <link rel="icon" type="image/x-icon" href='logo-sm.jpg' />
       </Head>
       <Header token={token} />
       <div className='flex justify-center mt-8'>
@@ -94,12 +94,12 @@ const Profile = ({ token }) => {
                     <div className="grid md:grid-cols-2">
                       <div className="grid grid-cols-1">
                         <div className="px-4 py-2 text-gray-500 font-semibold">Full Name</div>
-                        <div className="px-4 py-2">{userdata.candidate_name}</div>
+                        <div className="px-4">{userdata.candidate_name}</div>
                       </div>
 
                       <div className="grid grid-cols-1">
                         <div className="px-4 py-2 text-gray-500 font-semibold">Email</div>
-                        <div className="px-4 py-2">
+                        <div className="px-4">
                           <div >{userdata.email}</div>
                         </div>
                       </div>
@@ -109,44 +109,53 @@ const Profile = ({ token }) => {
                     <div className="grid md:grid-cols-2">
                       <div className="grid grid-cols-1">
                         <div className="px-4 py-2 text-gray-500 font-semibold">Year of Study</div>
-                        <div className="px-4 py-2">{userdata.YearofStudy}</div>
+                        <div className="px-4">{userdata.YearofStudy}</div>
                       </div>
 
                       <div className="grid grid-cols-1">
                         <div className="px-4 py-2 text-gray-500 font-semibold">Semester</div>
-                        <div className="px-4 py-2">
+                        <div className="px-4">
                           <div >{userdata.Semester}</div>
                         </div>
                       </div>
-                      
-                      <div className="grid grid-cols-1">
-                        <div className="px-4 py-2 text-gray-500 font-semibold">Test Scored</div>
-                        <div className="px-4 py-2">
-                          <div>{userdata.score}</div>
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-1">
-                        <div className="px-4 py-2 text-gray-500 font-semibold">Result Declaration</div>
-                        <div className="px-4 py-2">
-                            <Link href={"/detaiilResult"} className="relative inline-block px-3 py-1 font-semibold text-black leading-tight">
-                              <a>
-                                <span aria-hidden="true" className="inset-0 bg-blue-200 opacity-50 rounded-full">
-                                </span>
-                                <span className="relative">
-                                  View Result
-                                </span>
-                              </a>
-                            </Link>
-                          </div>
-                          </div>
-                        </div>
-                      </div>
 
+                      <div className="grid grid-cols-1">
+                        <div className="px-4 py-2 text-gray-500 font-semibold">Response</div>
+                        <div className="px-4">
+                          <Link href={"/detaiilResult"} className="relative inline-block px-3 py-1 font-semibold text-black leading-tight">
+                            <a>
+                              <span aria-hidden="true" className="inset-0 bg-blue-200 opacity-50 rounded-full">
+                              </span>
+                              <span className="relative">
+                                View My Test Response
+                              </span>
+                            </a>
+                          </Link>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-1">
+                        <div className="px-4 py-2 text-gray-500 font-semibold">Results</div>
+                        <div className="px-4">
+                          <Link href={"/Results"} className="relative inline-block px-3 py-1 font-semibold text-black leading-tight">
+                            <a>
+                              <span aria-hidden="true" className="inset-0 bg-blue-200 opacity-50 rounded-full">
+                              </span>
+                              <span className="relative">
+                                View Results
+                              </span>
+                            </a>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
+
+
                 </div>
               </div>
+            </div>
+          </div>
       }
     </div>
   )

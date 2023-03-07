@@ -47,6 +47,14 @@ module.exports = () => {
         source: "/UserFullList",
         destination: `${Base_Url}/UserFullList`,
       },
+      {
+        source: "/allUsers",
+        destination: `${Base_Url}/allUsers`,
+      },
+      {
+        source: "/changeStatus",
+        destination: `${Base_Url}/changeStatus`,
+      },
 
     ];
   };

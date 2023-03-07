@@ -16,11 +16,6 @@ const Results = ({ token }) => {
   const [settingall, setSettings] = useState([])
   let [timerend, setTimerEnd] = useState(10)
   const [AdminEventWindupPermission, setAdminEventWindupPermission] = useState(false)
- 
-
-  resultJsonData['GoogleSheetData'].map(res => {
-    console.log(res)
-  })
 
   const timerLoad = setInterval(() => {
     if (timerend > 0) {

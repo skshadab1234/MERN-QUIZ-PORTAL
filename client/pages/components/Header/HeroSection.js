@@ -19,7 +19,16 @@ const HeroSection = () => {
                     data-aos="fade-right"
                     data-aos-anchor="#FirstSectionAnchor">
                     <h1 className="sm:text-7xl text-3xl mb-4 font-medium text-white flex">WHAT IS <img src="../web-logo.png"  className='w-24 md:w-40  ml-6 relative bottom-4 mr-2' /> ?</h1>
-                    <p className="mb-8 relative bottom-12 leading-relaxed text-justify">CIIYC is a Crack it if you can, Here Students have to crack the given programs in a given period of time.This is a coding contest based on algorithms, data structures and problem solving.Participate in the coding contest Cracking The Code to better your competitive programming skills.</p>
+                    <p className="mb-8 relative bottom-12 leading-relaxed text-justify">Welcome to 'Crack it if you can', a technical event that challenges you to put your knowledge and skills to the
+test. This event is designed for tech enthusiasts who are passionate about solving complex technical problems
+and enjoy a good challenge.
+Participants will be presented with a series of multiple-choice questions that cover a wide range of technical
+topics, including programming, software development, networking, cybersecurity, and more. The questions will
+be categorized into different levels, from beginner to advanced, to ensure that everyone can participate and
+have fun.
+The event will take place over a set period of time, with multiple rounds of questions. The winners will be
+determined based on their performance and speed and will receive prizes and recognition for their
+achievements.</p>
                     <p className="mb-8 leading-relaxed relative bottom-12">
                         If Your Registration is done, kindly check out your test slot 👇👇
                     </p>

@@ -31,7 +31,7 @@ body {
 .dark_bg{
     background-color: #0d0620;
 }
-.dark_theme, .ant-modal-content{
+.dark_theme{
     background-color: #2A2440!important;
 }
 
@@ -46,6 +46,11 @@ body {
 
 .glow {
   text-shadow: 0 0px 30px rgb(250 204 21/ 2);
+}
+
+.ant-btn-primary {
+  color: #fff;
+  background-color: #2A2440!important;
 }
 
 #my-canvas{
@@ -71,6 +76,8 @@ body {
 .xpWfed {
   display: none!important
 }
+
+            
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 const RulesModal = ({ isVisible, onClose }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [userdata, setuserdata] = useState([])
-    const router = useRouter(); 
+    const router = useRouter();
 
     const divs = [0, 1];
 
@@ -38,6 +38,13 @@ const RulesModal = ({ isVisible, onClose }) => {
     useEffect(() => {
         callData()
     }, [])
+
+    function getFirstString(text) {
+        if (text) {
+            var text_arr = text.split(" ");
+            return text_arr[0].charAt(0) + "" + text_arr[text_arr.length - 1].charAt(0);
+        }
+    }
     return (
         <div className={`fixed inset-0 ${isVisible ? 'flex' : 'hidden'} z-[999]`}>
             <div className="fixed inset-0 bg-black opacity-75"></div>
@@ -70,22 +77,28 @@ const RulesModal = ({ isVisible, onClose }) => {
                                 </>
                                 : divs[currentIndex] == 1 ?
                                     <>
-                                        <h3 className="text-2xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]">Check Details.</h3>
-                                        <div className='flex '>
-                                            <div class="max-w-sm rounded overflow-hidden shadow-lg dark_theme mt-6 w-100 mb-5">
-                                                <div class="px-6 py-4">
-                                                    <div class="font-bold text-xl text-gray-400 mb-2">{userdata.candidate_name}</div>
-                                                    <p class="text-gray-500 text-base">{userdata.email}</p>
-                                                    <p class="text-gray-500 text-base">{userdata.YearofStudy}/{userdata.Semester}</p>
+                                        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col my-2 ">
+                                            <div class="-mx-3 md:flex mb-6 ">
+                                                <div class="md:w-3/5 px-3 mb-6 md:mb-0 text-center border-r-2">
+                                                    <div class="text-center flex justify-center">
+                                                        <div className='w-20 bg-gray-300 p-4 rounded-full'>
+                                                            <h2 className='text-3xl font-bold'>{getFirstString(userdata.candidate_name)}</h2>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <h2 class="text-2xl font-bold mt-4">{userdata.candidate_name}</h2>
+                                                        <p class="text-gray-600">{userdata.email}</p>
+                                                        <p class="text-gray-600">{userdata.YearofStudy}/{userdata.Semester}</p>
+                                                    </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="max-w-sm rounded overflow-hidden shadow-lg  mt-6 w-100 mb-5 ml-2">
-                                                <div class="px-6 py-4">
-                                                    <div class="font-bold text-xl text-gray-400 mb-2">Note:</div>
-                                                    <p>Once you have verified that the information is correct, please click on the "Start Test" button to proceed.</p>
+                                                
+                                                <div className='mx-10'>
+                                                    <h1 className='font-bold'>Note</h1>
+                                                    <ul className='list-disc mt-2'>
+                                                        <li>Before proceeding with the test, please take a moment to verify that all the information in your profile is correct. If there are any errors or discrepancies, please notify the administrator before starting the test.</li>
+                                                        <li>Once you have confirmed the accuracy of your profile information, please click on the "Start Test" button to begin the challenge. Good luck!</li>
+                                                    </ul>
                                                 </div>
-
                                             </div>
                                         </div>
 

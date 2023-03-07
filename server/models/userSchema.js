@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
     SubmittedTime: {type: String},
     score: {type: Number},
     questionsAssigned: {type: Array},
-    myround_no: {type: Number}
+    myround_no: {type: Number},
+    status: {type:Number}
 })
 
 // We are making our password hash
