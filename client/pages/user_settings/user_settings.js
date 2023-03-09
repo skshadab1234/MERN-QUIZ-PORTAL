@@ -10,10 +10,7 @@ const user_settings = ({ token }) => {
   const router = useRouter()
   const [userdata, setuserdata] = useState([])
   const [Settingloading, setSettingloading] = useState(true)
-  const [isEnabled, setIsEnabled] = useState(false);
-
   const columns = [
-  
     {
       title: 'Batch No',
       dataIndex: 'myround_no',
@@ -48,7 +45,7 @@ const user_settings = ({ token }) => {
       dataIndex: 'status',
       key: 'status',
       render: (status, record) => (
-        <Radio.Group defaultValue={status} onChange={(e) => handleStatusChange(e, record._id)} radioStyle={{ backgroundColor: 'red' }}>
+        <Radio.Group defaultValue={status} onChange={(e) => handleStatusChange(e, record._id)} >
           <Radio value={1} className="form-radio text-green-500" > Active</Radio>
           <Radio value={0} className="text-red-500">Inactive</Radio>
         </Radio.Group>
@@ -155,7 +152,6 @@ const user_settings = ({ token }) => {
     callCandidate();
   }, [])
 
-  console.log(data);
   const handlePageChange = (page) => {
     setCurrentPage(page);
   }
