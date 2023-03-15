@@ -64,7 +64,7 @@ export default function Header({ token }) {
             {token == '' ? <>
             </> :
               <>
-                <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto">
+                <div id="profileIcon" className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto">
 
                   {/* Profile dropdown */}
                   <Menu as="div" className="ml-3 relative md:w-full w-44 top-0 md:w-full">
@@ -147,7 +147,7 @@ export default function Header({ token }) {
             }
           </div>
         </div>
-
+            
       </>
     </Disclosure>
   )

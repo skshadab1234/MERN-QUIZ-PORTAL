@@ -112,53 +112,53 @@ const event = ({ token }) => {
                     </div>
 
                     <div class="bg-gray-100 py-16">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center">
-      <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-        Contact Us
-      </h2>
-      <p class="mt-4 text-lg text-gray-600">
-        If you have any questions or concerns, please don't hesitate to get in touch with us.
-      </p>
-    </div>
-    <div class="mt-16 md:flex md:items-center md:justify-center">
-      <div class="md:flex-shrink-0">
-        <img class="mx-auto h-10 w-10" src="https://mailmeteor.com/logos/assets/PNG/Gmail_Logo_256px.png" alt="Email icon" />
-      </div>
-      <div class="mt-4 md:mt-0 md:ml-6">
-        <p class="text-base font-medium text-gray-900">
-          Email
-        </p>
-        <p class="mt-1 text-lg text-gray-600">
-          <a href="mailto://csmit.techhead@gmail.com">
-          csmit.techhead@gmail.com
-          </a>
-        </p>
-      </div>
-    </div>
-    <div class="mt-8 md:flex md:items-center md:justify-center">
-      <div class="md:flex-shrink-0">
-        <img class="mx-auto h-10 w-10" src="https://i1.wp.com/zeevector.com/wp-content/uploads/Phone-Icon-Vector-PNG.png?fit=591%2C623&ssl=1" alt="Phone icon" />
-      </div>
-      <div class="mt-4 md:mt-0 md:ml-6">
-        <p class="text-base font-medium text-gray-900">
-          Phone
-        </p>
-        <p class="mt-1 text-lg text-gray-600">
-          Sahil Nakti - +91 7506526132
-        </p>
-        <p class="mt-1 text-lg text-gray-600">
-          Aman Pinjar - +91 9867960166
-        </p>
-        <p class="mt-1 text-lg text-gray-600">
-          Khan Shadab Alam - +91 9167263576
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
+                        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="text-center">
+                                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                                    Contact Us
+                                </h2>
+                                <p class="mt-4 text-lg text-gray-600">
+                                    If you have any questions or concerns, please don't hesitate to get in touch with us.
+                                </p>
+                            </div>
+                            <div class="mt-16 md:flex md:items-center md:justify-center">
+                                <div class="md:flex-shrink-0">
+                                    <img class="mx-auto h-10 w-10" src="https://mailmeteor.com/logos/assets/PNG/Gmail_Logo_256px.png" alt="Email icon" />
+                                </div>
+                                <div class="mt-4 md:mt-0 md:ml-6">
+                                    <p class="text-base font-medium text-gray-900">
+                                        Email
+                                    </p>
+                                    <p class="mt-1 text-lg text-gray-600">
+                                        <a href="mailto://csmit.techhead@gmail.com">
+                                            csmit.techhead@gmail.com
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-8 md:flex md:items-center md:justify-center">
+                                <div class="md:flex-shrink-0">
+                                    <img class="mx-auto h-10 w-10" src="https://i1.wp.com/zeevector.com/wp-content/uploads/Phone-Icon-Vector-PNG.png?fit=591%2C623&ssl=1" alt="Phone icon" />
+                                </div>
+                                <div class="mt-4 md:mt-0 md:ml-6">
+                                    <p class="text-base font-medium text-gray-900">
+                                        Phone
+                                    </p>
+                                    <p class="mt-1 text-lg text-gray-600">
+                                        Sahil Nakti - +91 7506526132
+                                    </p>
+                                    <p class="mt-1 text-lg text-gray-600">
+                                        Aman Pinjar - +91 9867960166
+                                    </p>
+                                    <p class="mt-1 text-lg text-gray-600">
+                                        Khan Shadab Alam - +91 9167263576
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    
+
                 </div>
             </main>
         </>
@@ -168,7 +168,7 @@ const event = ({ token }) => {
 export default event
 
 
-
+  
 export function getServerSideProps({ req, res }) {
     return { props: { token: req.cookies.jwtoken || '' } }
 }

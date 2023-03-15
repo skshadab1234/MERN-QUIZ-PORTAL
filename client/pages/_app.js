@@ -3,6 +3,7 @@ import Head from 'next/head'
 import '../styles/globals.css'
 import AOS from 'aos';
 import 'aos/dist/aos.css'
+import 'intro.js/introjs.css';
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {

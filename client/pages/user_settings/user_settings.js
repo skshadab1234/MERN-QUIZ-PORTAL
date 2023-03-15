@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import Header from '../components/Header/Header'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Table, Button, Modal, Form, Input, message, Radio, Pagination, Switch } from 'antd';
-
+import { useReactToPrint } from 'react-to-print';
 
 const user_settings = ({ token }) => {
   const router = useRouter()
   const [userdata, setuserdata] = useState([])
   const [Settingloading, setSettingloading] = useState(true)
+  const [searchUsers, setsearchUsers] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState();
+
   const columns = [
     {
       title: 'Batch No',
@@ -141,7 +144,7 @@ const user_settings = ({ token }) => {
           },
         })
           .then(response => response.json())
-          .then(jsonData => { setData(jsonData); setLoading(false) })
+          .then(jsonData => { setData(jsonData); setFilteredUsers(jsonData); setLoading(false) })
           .catch(error => console.error(error))
 
       } catch (error) {
@@ -228,7 +231,7 @@ const user_settings = ({ token }) => {
             },
           ]);
 
-          const addVoter = async () => {
+          const addCandidate = async () => {
             try {
               const res = await fetch("/register", {
                 method: "POST",
@@ -254,7 +257,7 @@ const user_settings = ({ token }) => {
           }
 
           // Caling Add Candidate Function
-          addVoter();
+          addCandidate();
 
         } else {
           console.log('update');
@@ -302,6 +305,15 @@ const user_settings = ({ token }) => {
       });
   }
 
+  const handleSearch = (event) => {
+    setsearchUsers(event.target.value)
+    if (searchUsers != '') {
+      setData(filteredUsers.filter(user => user.candidate_name.toLowerCase().includes(event.target.value.toLowerCase())));
+    } else {
+      setData(filteredUsers);
+    }
+  }
+
   return (
     <>
       {
@@ -324,11 +336,24 @@ const user_settings = ({ token }) => {
                 <div className='flex justify-center'>
                   <Button onClick={handleCreate} className="text-gray-300">Add New Candidate</Button>
                 </div>
-                <Table columns={columns}
-                  dataSource={data}
-                  pagination={false}
-                  className="table-responsive w-full mt-10"
-                  rowClassName="bg-slate-800 no-hover text-gray-200 hover:text-slate-400 rounded-none border-b-2 border-zinc-300" />
+                <div className='mt-10 grid justify-items-end mb-4'>
+                  <div className='w-75'></div>
+                  <div className='w-25 flex-1'>
+                    <input
+                      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="searchUsers"
+                      type="text" value={searchUsers} onChange={handleSearch}
+                      placeholder="Search.."
+                    />
+                  </div>
+                </div>
+                <div id="pdf-table">
+                  <Table columns={columns}
+                    dataSource={data}
+                    pagination={false}
+                    className="table-responsive w-full "
+                    rowClassName="bg-slate-800 no-hover text-gray-200 hover:text-slate-400 rounded-none border-b-2 border-zinc-300" />
+                </div>
 
                 <div className="mt-4">
                   <Pagination

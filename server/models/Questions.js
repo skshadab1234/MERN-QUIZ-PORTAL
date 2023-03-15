@@ -7,7 +7,9 @@ const Question = new mongoose.Schema({
     question_name: {type: String, required: true},
     questionImage: {type: String},
     answers : {type: Array},
-    correctOutput: {type: String}
+    correctOutput: {type: String},
+    type: {type:String},
+    explaination:{type:String}
 })
 
 //Model 

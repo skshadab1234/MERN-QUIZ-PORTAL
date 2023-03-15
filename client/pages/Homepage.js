@@ -4,6 +4,7 @@ import Moment from "moment";
 import HeroSection from "./components/Header/HeroSection"
 import Footer from './components/Footer';
 import { useRouter } from 'next/router';
+import HeaderIntro from './components/Introduction/Heeader'
 
 const Homepage = () => {
   const [settingsdata, setsettingsdata] = useState([])
@@ -22,6 +23,8 @@ const Homepage = () => {
     heading: "font-bold md:text-[46px] md:leading-[70px] text-[34px] leading-[46px] tracking-[-0.5%] text-center mt-3",
   }
   
+
+  
   useEffect(() => {
     if(isLoading == true) {
       settings().then((res) => {
@@ -29,14 +32,15 @@ const Homepage = () => {
         setLoading(false)
       })
     }
+
+ 
+  
   }, [settingsdata])
   return (
     <div className="md:container md:mx-auto">
       <HeroSection />
 
-      <div className='mt-20'>
-        {/* <h1 className={styles.h?eading+ " text-white"}>Welcome to <span className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>CIIYC</span> Contest</h1>  */}
-      </div>
+      
       <div className='mt-20'
         data-aos="fade-up"
         data-aos-duration="1000"
@@ -44,15 +48,10 @@ const Homepage = () => {
         {/* Upcomeing Event Section  */}
         <h1 className={styles.heading + " bg-clip-text text-transparent bg-gradient-to-r from-[#4ca5ff] to-[#b673f8]"}>CIIYC Batch</h1>
       </div>
-      <div className="py-8" 
-           data-aos="fade-up"
-           data-aos-offset="200"
-           data-aos-delay="50"
-           data-aos-duration="1000"
-          >
+      <div className="py-8" >
         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
           <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-            <table className="min-w-full leading-normal dark_theme text-white">
+            <table id="table" className="min-w-full leading-normal dark_theme text-white">
               <thead>
                 <tr>
                   <th scope="col" className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
@@ -65,7 +64,7 @@ const Homepage = () => {
                   <th scope="col" className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
                     End Time
                   </th>
-                  <th scope="col" className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
+                  <th scope="col" id="competitors" className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
                     Competitors
                   </th>
                   <th scope="col" className="px-5 py-3 border-b border-white-200 text-white-800  text-left text-sm uppercase font-normal">
@@ -149,7 +148,8 @@ const Homepage = () => {
           </div>
         </div>
       </div>
-
+        
+      {isLoading == false ? <HeaderIntro/> : ''}
       <Footer />
     </div >
   )

@@ -15,6 +15,7 @@
     "aos": "^3.0.0-beta.6",
     "confetti-js": "^0.0.18",
     "cookies-next": "^2.1.1",
+    "intro.js": "^6.0.0",
     "js-cookie": "^3.0.1",
     "moment": "^2.29.4",
     "next": "12.2.4",
@@ -22,7 +23,9 @@
     "react-countdown": "^2.3.2",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
-    "sweetalert2": "^11.4.26"
+    "react-to-print": "^2.14.12",
+    "screenfull": "^6.0.2",
+    "sweetalert2": "^11.4.8"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.4",

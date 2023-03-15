@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import RulesModal from '../RulesModal';
 
 const HeroSection = () => {
     const [isModalVisible, setModalVisible] = useState(false);
-
-  const showModal = () => {
-    setModalVisible(true);
-    AOS.init(document.getElementById('RulesModal'));
-  };
-
-  const hideModal = () => {
-    setModalVisible(false);
-  };
     return (
         <div id="FirstSectionAnchor" className="text-gray-600 body-font mt-5">
             <div className="container mx-auto flex px-5 md:flex-row flex-col items-center">

@@ -22,7 +22,12 @@ router.post('/register', async (req, res) => {
         if (UserExists) {
             res.status(400).json({ status: 400, message: "User Already Exists" });
         } else {
-            const user = new User({ email, candidate_name, password, Semester, YearofStudy, testOn, questionsAssigned:[], SubmittedTime: '',  myround_no })
+            const newData = [];
+            for (let i = 1; i <= 30; i++) {
+                newData.push(i);
+            }
+
+            const user = new User({ email, candidate_name, password, Semester, YearofStudy, testOn, questionsAssigned:[newData], SubmittedTime: '',  myround_no, status:1 })
             await user.save();
             res.status(200).json({ status: 200, message: "Registered Successfully" });
         }
@@ -63,6 +68,40 @@ router.post("/login", async (req, res) => {
     }
 })
 
+// Delete Candidate
+router.post('/delete_candidate', async (req,res) => {
+    try {
+      const { selectedKey } = req.body
+      User.deleteOne({_id:selectedKey}, (err) => {
+        if(!err) {
+            res.status(200).send({status:200, message: 'done'})
+        }
+      })
+    } catch (error) {
+        console.log(error)
+    }    
+})
+
+// Update Candidate
+router.post('/update_candidate', async (req,res) => {
+    try {
+       const { selectedKey } = req.body
+      
+       const {email, candidate_name, Semester, YearofStudy, myround_no} = req.body.values
+        console.log(req.body.values)
+       User.findByIdAndUpdate(selectedKey, { email, candidate_name, Semester, YearofStudy, myround_no }, (error) => {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Candidate updated successfully!');
+          res.status(200).send({status:200, message:'done'})
+        }
+      });
+    } catch (error) {
+        console.log(error)
+    }    
+})
+
 // Submit Test 
 router.post("/uploadTest", async (req, res) => {
     try {
@@ -74,7 +113,6 @@ router.post("/uploadTest", async (req, res) => {
 
     }
 })
-
 
 // Profile Page Router
 router.get("/profile", pageAuth, (req, res) => {
@@ -104,6 +142,7 @@ router.post("/allUsers", async (req, res) => {
     }
     catch { err => res.status(400).send("Something went Wrong") };
 })
+
 router.get("/logout", (req, res) => {
     res.clearCookie("jwtoken", { path: '/' })
     // console.log(req.rootUser);
@@ -152,7 +191,6 @@ router.post("/getWinnersList", async (req, res) => {
 
 })
 
-
 // Get Score of Each User and Update his score
 router.post("/GetUserScore", async (req, res) => {
     try {
@@ -188,17 +226,10 @@ router.post("/changeStatus", async (req, res) => {
         res.send("Something went Wrong");
     }
 })
+
 router.get("/ResetAllUserAnswer", async (req, res) => {
     try {
-
         const updateData = await User.updateMany({name:""}, {$set: { testOn: "true", UserTestResponse: [], SubmittedTime: '', score: 0, status: 1}})
-        const newData = [];
-        for (let i = 1; i <= 30; i++) {
-            newData.push(i);
-        }
-
-        // const updateData = await User.updateMany({ name: "" }, { $set: { questionsAssigned: newData } });
-
         res.send(updateData)
     } catch (error) {
         res.send("Something went Wrong");
