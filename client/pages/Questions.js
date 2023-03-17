@@ -396,7 +396,7 @@ const Questions = ({ token }) => {
                                     <h1 className='h-12 flex justify-center items-center'>Difficulty level: {question.difficulty}</h1>
                                   </div>
                                   {
-                                    question.questionImage == '' ? '' : <img src={`${question.questionImage}`} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
+                                    question.questionImage == '' ? '' : <img src={`https://ciiyc.vercel.app${question.questionImage}`} className="w-full mt-6 rounded-[40px] shadow-gray-200" />
                                   }
                                   <div className='flex  justify-between'>
                                     <h1 className='text-sm md:text-xl mt-5'>  Answer : </h1>
