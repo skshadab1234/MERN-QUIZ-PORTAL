@@ -248,7 +248,7 @@
             difficulty: 'easy',
             languages: "C",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/1/q1.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/1/q1.png",
             answers:[
                 {0: "5 10"},
                 {1: "10 15"},
@@ -264,7 +264,7 @@
             difficulty: 'easy',
             languages: "C",
             question_name: 'What is wrong with the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/2/q2.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/2/q2.png",
             answers:[
                 {0: "There is no error"},
                 {1: "The string length of str1 is too short to store 'Hello'"},
@@ -280,7 +280,7 @@
             difficulty: 'easy',
             languages: "C",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/3/q3.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/3/q3.png",
             answers:[
                 {0: " x is equal to y"},
                 {1: "Nothing is printed"},
@@ -296,7 +296,7 @@
             difficulty: 'easy',
             languages: "C",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/4/q4.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/4/q4.png",
             answers:[
                 {0: " 5 10 \n 10 5"},
                 {1: "5 10 \n 5 10"},
@@ -312,7 +312,7 @@
             difficulty: 'easy',
             languages: "C",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/5/q5.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/5/q5.png",
             answers:[
                 {0: "11 22"},
                 {1: "12 23"},
@@ -328,7 +328,7 @@
             difficulty: 'high',
             languages: "C",
             question_name: 'Memory Allocation Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/6/q6.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/6/q6.png",
             answers:[
                 {0: "This code will allocate memory for an integer and set its value to 10."},
                 {1: "This code will result in a memory leak."},
@@ -344,7 +344,7 @@
             difficulty: 'high',
             languages: "C",
             question_name: 'Pointer Arithmetic Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/7/q7.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/7/q7.png",
             answers:[
                 {0: "This code will output 3."},
                 {1: "This code will output 2."},
@@ -360,7 +360,7 @@
             difficulty: 'high',
             languages: "C",
             question_name: 'Bit Manipulation Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/8/q8.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/8/q8.png",
             answers:[
                 {0: "This code will output 0."},
                 {1: "This code will output 38."},
@@ -376,7 +376,7 @@
             difficulty: 'high',
             languages: "C",
             question_name: 'Recursion Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/9/q9.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/9/q9.png",
             answers:[
                 {0: "This code will cause a stack overflow error."},
                 {1: "This code will return the sum of the integers from 1 to n."},
@@ -392,7 +392,7 @@
             difficulty: 'high',
             languages: "C",
             question_name: ' Pointers to Pointers Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/10/q10.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/10/q10.png",
             answers:[
                 {0: "This code will output 5."},
                 {1: "This code will output the memory address of `a`."},
@@ -408,7 +408,7 @@
             difficulty: 'easy',
             languages: "Java",
             question_name: ' Basic Java Syntax Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/11/q11.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/11/q11.png",
             answers:[
                 {0: "This code will output `Hello, World!`."},
                 {1: "This code will output a compilation error."},
@@ -424,7 +424,7 @@
             difficulty: 'easy',
             languages: "Java",
             question_name: 'Java Variables and Data Types Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/12/q12.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/12/q12.png",
             answers:[
                 {0: "This code will output 15.5."},
                 {1: "This code will output a compilation error."},
@@ -440,7 +440,7 @@
             difficulty: 'easy',
             languages: "Java",
             question_name: ' Java Control Structures Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/13/q13.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/13/q13.png",
             answers:[
                 {0: "This code will output `x is greater than 10`"},
                 {1: "This code will output `x is greater than 5 but less than or equal to 10`."},
@@ -456,7 +456,7 @@
             difficulty: 'easy',
             languages: "Java",
             question_name: 'Java Loops Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/14/q14.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/14/q14.png",
             answers:[
                 {0: "This code will output `0``."},
                 {1: "This code will output `0 1 2 3 4`."},
@@ -472,7 +472,7 @@
             difficulty: 'easy',
             languages: "Java",
             question_name: 'Java Arrays Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/15/q15.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/15/q15.png",
             answers:[
                 {0: "This code will output a runtime error."},
                 {1: "This code will output a compilation error."},
@@ -488,7 +488,7 @@
             difficulty: 'Medium',
             languages: "Java",
             question_name: 'Java Inheritance Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/16/q16.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/16/q16.png",
             answers:[
                 {0: "This code will output `Animal is eating` and `Dog is barking`."},
                 {1: "This code will output a compilation error."},
@@ -504,7 +504,7 @@
             difficulty: 'Medium',
             languages: "Java",
             question_name: 'Java Interfaces Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/17/q17.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/17/q17.png",
             answers:[
                 {0: "This code will output a compilation error."},
                 {1: "This code will output a runtime error."},
@@ -520,7 +520,7 @@
             difficulty: 'Hard',
             languages: "Java",
             question_name: 'Java Generics Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/18/q18.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/18/q18.png",
             answers:[
                 {0: 'The code will output "1", "2", "3".'},
                 {1: "This code will output a runtime error."},
@@ -536,7 +536,7 @@
             difficulty: 'Hard',
             languages: "Java",
             question_name: 'Java Generics Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/19/q19.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/19/q19.png",
             answers:[
                 {0: 'The code will output "[2, 4, 6, 8, 10]".'},
                 {1: 'The code will output "[2, 4]".'},
@@ -552,7 +552,7 @@
             difficulty: 'Hard',
             languages: "Java",
             question_name: 'Java Networking Question. What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/20/q20.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/20/q20.png",
             answers:[
                 {0: 'The code will not compile because of a semantic error'},
                 {1: 'The code will not compile because of a syntax error'},
@@ -568,7 +568,7 @@
             difficulty: 'Easy',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/21/q21.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/21/q21.png",
             answers:[
                 {0: '[1, 2, 4, 5]'},
                 {1: '[1, 2, 4, 5, 3]'},
@@ -584,7 +584,7 @@
             difficulty: 'Easy',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/22/q22.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/22/q22.png",
             answers:[
                 {0: '5 + 2 = 7'},
                 {1: '7'},
@@ -600,7 +600,7 @@
             difficulty: 'Easy',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/23/q23.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/23/q23.png",
             answers:[
                 {0: '5  '},
                 {1: '10'},
@@ -616,7 +616,7 @@
             difficulty: 'Easy',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/24/q24.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/24/q24.png",
             answers:[
                 {0: '1'},
                 {1: '2'},
@@ -632,7 +632,7 @@
             difficulty: 'Easy',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/25/q25.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/25/q25.png",
             answers:[
                 {0: '7'},
                 {1: '52'},
@@ -648,7 +648,7 @@
             difficulty: 'Hard',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/26/q26.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/26/q26.png",
             answers:[
                 {0: 'The number of lines in the file "my_file.txt"'},
                 {1: 'The number of words in the file "my_file.txt"'},
@@ -664,7 +664,7 @@
             difficulty: 'Hard',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/27/q27.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/27/q27.png",
             answers:[
                 {0: '10'},
                 {1: '55'},
@@ -680,7 +680,7 @@
             difficulty: 'Hard',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/28/q28.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/28/q28.png",
             answers:[
                 {0: '5'},
                 {1: '10'},
@@ -696,7 +696,7 @@
             difficulty: 'Hard',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/29/q29.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/29/q29.png",
             answers:[
                 {0: '0'},
                 {1: '10'},
@@ -712,7 +712,7 @@
             difficulty: 'Hard',
             languages: "Python",
             question_name: 'What is the output of the following code snippet?',
-            questionImage : "/questions-0242365adb2b122kjmnsk/30/q30.PNG",
+            questionImage : "/questions-0242365adb2b122kjmnsk/30/q30.png",
             answers:[
                 {0: '[(1, 4), (2, 5), (3, 6)], []'},
                 {1: '[], [(1, 4), (2, 5), (3, 6)]'},
