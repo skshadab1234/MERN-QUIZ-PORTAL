@@ -240,11 +240,9 @@
         type: 'text',
         explaination: "N/A"
     },
-]
+] */
 
-export default QuestionsData; */
-
-const QuestionsData = [
+ const QuestionsData = [
         {
             questionId: 1,
             difficulty: 'easy',
@@ -727,4 +725,4 @@ const QuestionsData = [
         },
 ]
 
-export default QuestionsData
+export default QuestionsData 

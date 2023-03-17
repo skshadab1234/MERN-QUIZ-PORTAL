@@ -4,7 +4,6 @@ import Header from '../components/Header/Header'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { Table, Button, Modal, Form, Input, message, Radio, Pagination, Switch } from 'antd';
-import { useReactToPrint } from 'react-to-print';
 
 const user_settings = ({ token }) => {
   const router = useRouter()
@@ -15,9 +14,16 @@ const user_settings = ({ token }) => {
 
   const columns = [
     {
+      title: 'SR No',
+      dataIndex: 'sr_no',
+      key: 'sr_no',
+      render: (_, record, index) => index + 1,
+    },
+    {
       title: 'Batch No',
       dataIndex: 'myround_no',
       key: 'myround_no',
+      sorter: (a, b) => a.myround_no - b.myround_no
     },
     {
       title: 'candidate_name',
@@ -105,8 +111,52 @@ const user_settings = ({ token }) => {
   const [data, setData] = useState();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [Loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 5;
+
+  const [passowrdUpdate, setpassowrdUpdate] = useState({
+    newPassword: '',
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setpassowrdUpdate({
+      ...passowrdUpdate,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // TODO: Add code to update the user's password
+    console.log(passowrdUpdate)
+
+    const updatePassword = async () => {
+      try {
+        const res = await fetch("/updatePassword", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            passowrdUpdate
+          })
+        })
+
+        const data = await res.json();
+        // console.log(data)
+        if (data.status == 200) {
+          message.success(data.message)
+        } else {
+          message.error(data.message)
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    // Caling Add Candidate Function
+    updatePassword();
+  };
 
   const callData = async () => {
     try {
@@ -132,7 +182,6 @@ const user_settings = ({ token }) => {
   useEffect(() => {
     callData()
   }, [])
-
 
   useEffect(() => {
     const callCandidate = async () => {
@@ -348,6 +397,7 @@ const user_settings = ({ token }) => {
                   </div>
                 </div>
                 <div id="pdf-table">
+                  <p className='text-2xl text-gray-200'>Total Students: {data?.length}</p>
                   <Table columns={columns}
                     dataSource={data}
                     pagination={false}
@@ -355,13 +405,33 @@ const user_settings = ({ token }) => {
                     rowClassName="bg-slate-800 no-hover text-gray-200 hover:text-slate-400 rounded-none border-b-2 border-zinc-300" />
                 </div>
 
-                <div className="mt-4">
-                  <Pagination
-                    current={currentPage}
-                    onChange={handlePageChange}
-                    pageSize={pageSize}
-                    total={data?.length}
-                  />
+                <div className='mt-10'>
+                  <h1 className='text-2xl text-gray-200 text-center'> Password Change</h1>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                      <label
+                        htmlFor="newPassword"
+                        className="block text-gray-700 font-bold mb-2"
+                      >
+                        New Password
+                      </label>
+                      <input
+                        type="text"
+                        id="newPassword"
+                        name="newPassword"
+                        value={passowrdUpdate.newPassword}
+                        onChange={handleInputChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Update Password
+                    </button>
+                  </form>
                 </div>
               </div>
               <Modal
@@ -400,6 +470,7 @@ const user_settings = ({ token }) => {
               >
                 <p>Are you sure you want to delete this row?</p>
               </Modal>
+
 
             </> : <>
               <Head>

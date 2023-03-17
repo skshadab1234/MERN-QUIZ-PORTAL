@@ -227,9 +227,34 @@ router.post("/changeStatus", async (req, res) => {
     }
 })
 
+router.post("/updatePassword", async (req, res) => {
+    try {
+         const {newPassword} = req.body.passowrdUpdate;
+         const hash = await bcrypt.hash(newPassword, 12);
+
+
+         const updateData = await User.updateMany({name:""}, {$set: { password:hash}})
+         if(updateData) {
+            res.status(200).send({status:200, message:'Password Successfully Updated'})
+        }else{
+            res.status(400).send({status:400, message:'Something Went Wrong'})
+
+        }
+         
+    } catch (error) {
+        res.send("Something went Wrong");
+    }
+})
+
 router.get("/ResetAllUserAnswer", async (req, res) => {
     try {
+        const newData = [];
+            for (let i = 1; i <= 30; i++) {
+                newData.push(i);
+            }
+
         const updateData = await User.updateMany({name:""}, {$set: { testOn: "true", UserTestResponse: [], SubmittedTime: '', score: 0, status: 1}})
+        // const updateData = await User.updateMany({name:""}, {$set: { questionsAssigned: newData}})
         res.send(updateData)
     } catch (error) {
         res.send("Something went Wrong");

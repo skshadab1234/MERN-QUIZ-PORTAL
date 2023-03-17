@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Header from './components/Header/Header'
 import { useRouter } from 'next/router'
 import QuestionsData from '../data/api_questions'
@@ -23,8 +23,8 @@ const Questions = ({ token }) => {
   const [Answered, setAnswered] = useState(0)
   const [NotAnswered, setNotAnswered] = useState(0)
   const [endTestInfoModal, setendTestInfoModal] = useState(false)
-
   const lettersArray = Array.from({ length: 26 }, (_, i) => String.fromCharCode(i + 65));
+  const myElement = useRef(null);
 
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var datenow = new Date()
@@ -125,8 +125,11 @@ const Questions = ({ token }) => {
     }
 
     document.getElementById("optionselect" + questionId + answer).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
-    document.getElementById("getChecked" + questionId).classList.add("border-indigo-500", "mix-blend-screen", "text-gray-500")
-    
+    // const ele = document.getElementById('getChecked'+questionId)
+    // ele.classList.add('bg-green-500');
+    // console.log(ele)
+
+
     answerData.map((data, i) => {
       if (data.questionId == questionId) {
         document.getElementById('questionId' + questionId).innerHTML = 'Updating Answer.....'
@@ -362,27 +365,25 @@ const Questions = ({ token }) => {
                                   <h1><Countdown date={Date.now() + EndtimerSeconds} renderer={renderer} /></h1>
                                 </nav>
                                 <div key={index} id={index + 1} className='dark_theme h-3/5 p-10  mt-5 rounded-lg text-white'>
-                                  <div className='fixed top-[96px] right-0 w-24 bg-white p-2' >
+                                  {/* <div className='fixed top-[96px] right-0 w-24 bg-white p-2' >
                                     <div className='grid grid-cols-2 gap-2'>
                                       {
                                         questionsLists.map((item, i) => {
                                           const status = 'bg-red-500 p-1 rounded-full'
                                           return <>
-                                            <div  id={`getChecked${i + 1}`} className='text-white p-1 text-center'>
                                               {
                                                 userdata.UserTestResponse.map(uitem => {
                                                   {
-                                                    i + 1 == uitem.questionId ? status = 'bg-green-600 text-white p-1 rounded-full' : ''
+                                                    i + 1 == uitem.questionId ? status = ('bg-green-600 text-white p-1 rounded-full') : ''
                                                   }
                                                 })
                                               }
-                                              <div className={`${status}`}><a href={`#${i + 1}`} >{i + 1}</a> </div>
-                                            </div>
+                                              <div id={`getChecked${i + 1}`}   className='text-red-500'>{i + 1} </div>
                                           </>
                                         })
                                       }
                                     </div>
-                                  </div>
+                                  </div> */}
                                   <div className='flex justify-between'>
                                     <h1 className='text-sm md:text-xl w-10/12 flex items-center'>Q{question.questionId + ') ' + question.question_name}</h1>
                                     <div id="language">
